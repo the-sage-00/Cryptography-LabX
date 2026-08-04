@@ -73,6 +73,6 @@ def handle_choice(choice):
         return True
 
     option_name = MENU_OPTIONS[choice]
-    print(f"\n  [{option_name}] — Coming Soon!")
+    print(f"\n  [{option_name}] - Coming Soon!")
     print(f"  This feature will be available in a future update.\n")
     return True

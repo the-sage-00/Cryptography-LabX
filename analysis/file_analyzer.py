@@ -55,11 +55,11 @@ def display_analysis(filename, stats):
     print(f"  Total Words       : {stats['words']}")
     print(f"  Total Lines       : {stats['lines']}")
     print(f"  Unique Characters : {len(stats['unique_chars'])}")
-    print(f"\n  {'─' * 40}")
+    print(f"\n  {'-' * 40}")
     print(f"  LETTER FREQUENCY")
-    print(f"  {'─' * 40}")
+    print(f"  {'-' * 40}")
     for letter, count in stats["letter_frequency"].items():
-        bar = "█" * min(count, 30)
+        bar = "#" * min(count, 30)
         print(f"    {letter} : {count:4d}  {bar}")
     print(f"{'=' * 50}\n")
 
@@ -72,7 +72,7 @@ def run_file_analysis():
         return
 
     print(f"\n  Available files in datasets/:")
-    print(f"  {'─' * 35}")
+    print(f"  {'-' * 35}")
     for i, fname in enumerate(files, 1):
         print(f"    [{i}] {fname}")
     print(f"    [0] Back to main menu")
