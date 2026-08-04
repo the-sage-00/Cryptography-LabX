@@ -13,10 +13,10 @@ CryptoLabX is a modular cryptanalysis framework developed as part of the Cryptog
 
 ## Team Members
 
-| Name             | Role                  |
-|------------------|-----------------------|
-| Member 1         | Developer / Analyst   |
-| Member 2         | Developer / Analyst   |
+| Name             | Roll No    | Role                  |
+|------------------|------------|-----------------------|
+| Rishi            | 20241566   | Developer / Analyst   |
+| TBD              | TBD        | Developer / Analyst   |
 
 > _Update the table above with actual team member names and roles._
 
