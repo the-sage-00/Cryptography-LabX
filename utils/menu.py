@@ -59,6 +59,11 @@ def handle_choice(choice):
         print("\n  Exiting CryptoLabX. Goodbye!\n")
         return False
 
+    if choice == "4":
+        from analysis.file_analyzer import run_file_analysis
+        run_file_analysis()
+        return True
+
     if choice in MENU_OPTIONS:
         option_name = MENU_OPTIONS[choice]
         print(f"\n  [{option_name}] — Coming Soon!")
