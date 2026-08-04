@@ -55,6 +55,14 @@ def handle_choice(choice):
     Process the selected menu option.
     Returns False if the user chose to exit, True otherwise.
     """
+    from utils.logger import log_action
+
+    if choice not in MENU_OPTIONS:
+        print("\n  Invalid choice. Please select a valid option (1-5).\n")
+        return True
+
+    log_action(MENU_OPTIONS[choice])
+
     if choice == "5":
         print("\n  Exiting CryptoLabX. Goodbye!\n")
         return False
@@ -64,11 +72,7 @@ def handle_choice(choice):
         run_file_analysis()
         return True
 
-    if choice in MENU_OPTIONS:
-        option_name = MENU_OPTIONS[choice]
-        print(f"\n  [{option_name}] — Coming Soon!")
-        print(f"  This feature will be available in a future update.\n")
-        return True
-
-    print("\n  Invalid choice. Please select a valid option (1-5).\n")
+    option_name = MENU_OPTIONS[choice]
+    print(f"\n  [{option_name}] — Coming Soon!")
+    print(f"  This feature will be available in a future update.\n")
     return True
