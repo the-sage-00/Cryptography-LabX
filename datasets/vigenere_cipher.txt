@@ -1,0 +1,9 @@
+The Vigenere cipher is a method of encrypting alphabetic text by using a series of interwoven
+Caesar ciphers based on the letters of a keyword. Though the cipher is easy to understand and
+implement, for three centuries it resisted all attempts to break it. It was first described by
+Giovan Battista Bellaso in 1553 but was later misattributed to Blaise de Vigenere. The cipher
+earned the description of being unbreakable, le chiffre indechiffrable. Friedrich Kasiski was
+the first to publish a general method of deciphering a Vigenere cipher in 1863. The key in a
+Vigenere cipher is a series of letters used to shift the plaintext. Each letter in the key
+determines the shift for the corresponding letter in the plaintext. If the key is shorter than
+the message, it is repeated to match the length of the plaintext.

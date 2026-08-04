@@ -1,0 +1,8 @@
+A hash function is any function that can be used to map data of arbitrary size to fixed size values.
+The values returned by a hash function are called hash values or digests. A cryptographic hash
+function is a special class of hash function that has certain properties which make it suitable
+for use in cryptography. It is a mathematical algorithm that maps data of any size to a bit string
+of a fixed size. It is designed to be a one way function, meaning it is infeasible to invert.
+Common cryptographic hash functions include SHA-256, SHA-3, and MD5. Hash functions are used in
+digital signatures, message authentication codes, and password storage. A good cryptographic hash
+function should be deterministic, quick to compute, and resistant to collisions and preimage attacks.

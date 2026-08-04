@@ -1,0 +1,8 @@
+Frequency analysis is the study of the frequency of letters or groups of letters in a ciphertext.
+The method is used as an aid to breaking classical ciphers. In the English language, the letter E
+is the most common letter, followed by T, A, O, I, N, S, H, and R. By analyzing the frequency
+of characters in a ciphertext, a cryptanalyst can determine patterns that help reveal the
+underlying plaintext. This technique was first documented by the Arab scholar Al Kindi in the
+ninth century. Frequency analysis works particularly well against monoalphabetic substitution
+ciphers. The distribution of letters in a sufficiently long ciphertext will closely mirror the
+distribution of the language in which the plaintext was written.

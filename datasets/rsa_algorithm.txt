@@ -1,0 +1,8 @@
+The RSA algorithm is a public key cryptosystem that is widely used for secure data transmission.
+It was publicly described in 1977 by Ron Rivest, Adi Shamir, and Leonard Adleman at MIT. In the
+RSA system, a user creates a pair of keys: a public key and a private key. The public key can be
+shared with everyone, while the private key must be kept secret. The security of RSA relies on the
+practical difficulty of factoring the product of two large prime numbers. To generate the keys, two
+large primes p and q are selected and multiplied to produce n. The totient of n is computed and an
+encryption exponent e is chosen. The decryption exponent d is the modular inverse of e modulo the
+totient. The strength of RSA depends on the key size, with 2048 bits considered secure today.
