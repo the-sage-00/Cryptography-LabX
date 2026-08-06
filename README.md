@@ -15,7 +15,7 @@ CryptoLabX is a modular cryptanalysis framework developed as part of the Cryptog
 
 | Name            | Roll No      |
 |-----------------|--------------|
-| Rishi           | 20241566     |
+| Rishi           | 2024UCP1566     |
 | Nandini Verma   | 2024UCP1667  |
 
 ---
