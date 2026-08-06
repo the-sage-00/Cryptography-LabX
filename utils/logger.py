@@ -1,5 +1,5 @@
 """
-CryptoLabX - Logger
+Crypto-LabX - Logger
 Records date, time, and selected menu option for every execution.
 Log entries are appended to outputs/cryptolabx.log.
 """
