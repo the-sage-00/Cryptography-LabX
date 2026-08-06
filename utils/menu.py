@@ -5,16 +5,6 @@ Provides the interactive command-line menu interface.
 
 import os
 
-
-BANNER = r"""
-  ____                  _        _          _   __  __
- / ___|_ __ _   _ _ __ | |_ ___ | |    __ _| |_|  \/  |
-| |   | '__| | | | '_ \| __/ _ \| |   / _` | __| |\/| |
-| |___| |  | |_| | |_) | || (_) | |__| (_| | |_| |  | |
- \____|_|   \__, | .__/ \__\___/|_____\__,_|\__|_|  |_|
-            |___/|_|                           X v1.0
-"""
-
 MENU_OPTIONS = {
     "1": "Encrypt",
     "2": "Decrypt",
@@ -30,8 +20,9 @@ def clear_screen():
 
 
 def display_banner():
-    """Display the application banner."""
-    print(BANNER)
+    """Display clean header without ASCII art banner."""
+    print("CryptoLabX v1.0")
+    print("-" * 50)
 
 
 def display_menu():
