@@ -13,18 +13,16 @@ CryptoLabX is a modular cryptanalysis framework developed as part of the Cryptog
 
 ## Team Members
 
-| Name             | Roll No    | Role                  |
-|------------------|------------|-----------------------|
-| Rishi            | 20241566   | Developer / Analyst   |
-| TBD              | TBD        | Developer / Analyst   |
-
-> _Update the table above with actual team member names and roles._
+| Name            | Roll No      |
+|-----------------|--------------|
+| Rishi           | 20241566     |
+| Nandini Verma   | 2024UCP1667  |
 
 ---
 
 ## Project Structure
 
-```
+```text
 CryptoLabX/
 ├── classical/          # Classical cipher implementations (Caesar, Vigenere, Playfair, etc.)
 ├── attacks/            # Cryptanalysis attack modules (brute force, frequency analysis, etc.)
@@ -54,21 +52,40 @@ CryptoLabX/
 
 ## Features (Week 1)
 
-- **Menu-Driven CLI**: Interactive command-line interface with options for Encrypt, Decrypt, Attack, Analyze, and Exit.
-- **File Analysis**: Reads a text file from `datasets/` and displays character count, word count, line count, unique characters, and letter frequency.
-- **Execution Logging**: Every menu selection is recorded with date and time in `outputs/cryptolabx.log`.
-- **Sample Datasets**: Five curated text files covering cryptography topics for future assignments.
+- **Menu-Driven CLI**
+  - Interactive command-line interface with options for Encrypt, Decrypt, Attack, Analyze, and Exit.
+
+- **File Analysis**
+  - Reads a text file from the `datasets/` directory and displays:
+    - Character count
+    - Word count
+    - Line count
+    - Unique characters
+    - Letter frequency
+
+- **Execution Logging**
+  - Every menu selection is recorded with date and time in:
+    ```
+    outputs/cryptolabx.log
+    ```
+
+- **Sample Datasets**
+  - Five curated text files covering various cryptography topics for testing and future assignments.
 
 ---
 
 ## How to Run
 
+### Clone the Repository
+
 ```bash
-# Clone the repository
 git clone https://github.com/the-sage-00/Cryptography-LabX.git
 cd Cryptography-LabX
+```
 
-# Run the toolkit
+### Run the Toolkit
+
+```bash
 python main.py
 ```
 
@@ -78,16 +95,16 @@ No external dependencies are required for Week 1.
 
 ## Future Modules
 
-| Week | Module            | Description                                          |
-|------|-------------------|------------------------------------------------------|
-| 2    | Classical Ciphers | Caesar, Vigenere, Playfair cipher implementations    |
-| 3    | Attacks           | Brute force, frequency analysis, known-plaintext     |
-| 4    | Math Utilities    | Modular arithmetic, GCD, prime number generation     |
-| 5    | Modern Ciphers    | AES, DES, RSA implementations                       |
-| 6    | Analysis Tools    | Advanced frequency analysis, pattern recognition     |
+| Week | Module | Description |
+|------|--------|-------------|
+| 2 | Classical Ciphers | Caesar, Vigenère, Playfair cipher implementations |
+| 3 | Attacks | Brute force, frequency analysis, known-plaintext attacks |
+| 4 | Math Utilities | Modular arithmetic, GCD, prime number generation |
+| 5 | Modern Ciphers | AES, DES, RSA implementations |
+| 6 | Analysis Tools | Advanced frequency analysis and pattern recognition |
 
 ---
 
 ## License
 
-This project is developed for academic purposes as part of the Cryptography Laboratory (22CPP307) course.
+This project is developed for academic purposes as part of the **Cryptography Laboratory (22CPP307)** course.
