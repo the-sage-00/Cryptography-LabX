@@ -1,0 +1,29 @@
+IoT Device Management - Test Cases
+
+TC01 - Device Registration
+Input: D001, Temperature Sensor, 127.0.0.1
+Expected: Device registered successfully.
+Result: Pass
+
+TC02 - View Registered Device
+Input: Menu option 2
+Expected: Registered device information displayed.
+Result: Pass
+
+TC03 - Command Injection
+Input: 127.0.0.1 & whoami
+Expected: Application should reject malicious command input.
+Actual: Input is passed to shell.
+Result: Vulnerable
+
+TC04 - Path Traversal
+Input: ..\test_traversal.txt
+Expected: File should remain inside firmware directory.
+Actual: Path can escape firmware directory.
+Result: Vulnerable
+
+TC05 - Missing Authentication
+Input: Direct configuration update
+Expected: Authentication should be required.
+Actual: Configuration can be changed without authentication.
+Result: Vulnerable

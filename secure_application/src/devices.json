@@ -1,0 +1,10 @@
+{
+    "D001": {
+        "name": "Temperature Sensor",
+        "ip": "127.0.0.1",
+        "status": "Registered",
+        "configuration": {
+            "mode": "maintenance"
+        }
+    }
+}
