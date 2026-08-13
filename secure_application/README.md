@@ -60,3 +60,27 @@ for security testing and SAST analysis as part of the laboratory assignment.
 
 A secure version is developed after identifying the vulnerabilities.
 
+
+
+\## Security Testing
+
+
+
+The application was analyzed using Semgrep as the Static Application Security Testing (SAST) tool.
+
+
+
+The vulnerable implementation contains the following security issues:
+
+
+
+1\. Command Injection
+
+2\. Path Traversal
+
+3\. Missing Authentication
+
+
+
+Semgrep analysis results are stored in the sast directory.
+
