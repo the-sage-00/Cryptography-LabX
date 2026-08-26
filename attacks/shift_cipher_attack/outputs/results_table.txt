@@ -1,0 +1,51 @@
++--------------------+-------------+-----------+-------------+----------+------------+
+| Test Case          | Actual Key  | Dict Key  | Chi-Sq Key  | Dict OK  | Chi-Sq OK  |
++--------------------+-------------+-----------+-------------+----------+------------+
+| Normal (spaces)    | 7           | 7         | 7           | YES      | YES        |
+| Long text          | 15          | 15        | 15          | YES      | YES        |
+| Short (3 words)    | 3           | 3         | 3           | YES      | YES        |
+| No spaces          | 12          | 0         | 12          | NO       | YES        |
+| Rare letters       | 19          | 19        | 25          | YES      | NO         |
++--------------------+-------------+-----------+-------------+----------+------------+
+
+DETAILED TEST CASE BREAKDOWN:
+
+--- Test Case 1: Standard Medium Text with Spaces ---
+  Actual Key      : 7
+  Ciphertext      : AOL XBPJR IYVDU MVE QBTWZ VCLY AOL SHGF KVN HUK YBUZ HDHF ZHMLSF
+  Dictionary Key  : 7 (Correct: YES)
+  Dict Plaintext  : THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG AND RUNS AWAY SAFELY
+  Chi-Square Key  : 7 (Correct: YES)
+  Chi Plaintext   : THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG AND RUNS AWAY SAFELY
+
+--- Test Case 2: Long Technical Text ---
+  Actual Key      : 15
+  Ciphertext      : RGNEIPCPANHXH XH IWT HIJSN DU PCPANOXCV XCUDGBPIXDC HNHITBH XC DGSTG ID HIJSN IWT WXSSTC PHETRIH DU IWT HNHITBH PCS QGTPZ RXEWTGH
+  Dictionary Key  : 15 (Correct: YES)
+  Dict Plaintext  : CRYPTANALYSIS IS THE STUDY OF ANALYZING INFORMATION SYSTEMS IN ORDER TO STUDY THE HIDDEN ASPECTS OF THE SYSTEMS AND BREAK CIPHERS
+  Chi-Square Key  : 15 (Correct: YES)
+  Chi Plaintext   : CRYPTANALYSIS IS THE STUDY OF ANALYZING INFORMATION SYSTEMS IN ORDER TO STUDY THE HIDDEN ASPECTS OF THE SYSTEMS AND BREAK CIPHERS
+
+--- Test Case 3: Short Text (3 words) ---
+  Actual Key      : 3
+  Ciphertext      : GHIHQG WKH FDVWOH
+  Dictionary Key  : 3 (Correct: YES)
+  Dict Plaintext  : DEFEND THE CASTLE
+  Chi-Square Key  : 3 (Correct: YES)
+  Chi Plaintext   : DEFEND THE CASTLE
+
+--- Test Case 4: Continuous Text Without Spaces ---
+  Actual Key      : 12
+  Ciphertext      : PQRQZPFTQQMEFIMXXARFTQOMEFXQMFPMIZ
+  Dictionary Key  : 0 (Correct: NO)
+  Dict Plaintext  : PQRQZPFTQQMEFIMXXARFTQOMEFXQMFPMIZ
+  Chi-Square Key  : 12 (Correct: YES)
+  Chi Plaintext   : DEFENDTHEEASTWALLOFTHECASTLEATDAWN
+
+--- Test Case 5: Unusual Letter Frequencies (High Z/J/Q/X counts) ---
+  Actual Key      : 19
+  Ciphertext      : CTSS KARMAF UNSS JNBS OXQ
+  Dictionary Key  : 19 (Correct: YES)
+  Dict Plaintext  : JAZZ RHYTHM BUZZ QUIZ VEX
+  Chi-Square Key  : 25 (Correct: NO)
+  Chi Plaintext   : DUTT LBSNBG VOTT KOCT PYR

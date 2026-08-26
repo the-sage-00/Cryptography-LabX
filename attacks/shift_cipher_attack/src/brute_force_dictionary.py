@@ -10,7 +10,11 @@ and dictionary word matching score evaluation.
 import os
 import re
 from typing import Dict, List, Tuple, Set
-from .shift_cipher import decrypt
+
+try:
+    from .shift_cipher import decrypt
+except ImportError:
+    from shift_cipher import decrypt
 
 
 DEFAULT_DICT_PATH = os.path.join(
@@ -51,7 +55,6 @@ def dictionary_score(text: str, dictionary: Set[str]) -> Tuple[int, float]:
     Returns:
         Tuple of (matched_word_count, match_percentage).
     """
-    # Tokenize text into words (alphabetic sequences)
     words = re.findall(r'[a-zA-Z]+', text.lower())
     if not words:
         return 0, 0.0
@@ -70,7 +73,7 @@ def dictionary_attack(ciphertext: str, dict_path: str = DEFAULT_DICT_PATH) -> Di
         dict_path: Path to dictionary word list.
 
     Returns:
-        Dictionary containing predicted_key, predicted_plaintext, all_candidates, and max_score.
+        Dictionary containing predicted_key, predicted_plaintext, max_score, etc.
     """
     dictionary = load_dictionary(dict_path)
     candidates = []
@@ -91,7 +94,6 @@ def dictionary_attack(ciphertext: str, dict_path: str = DEFAULT_DICT_PATH) -> Di
             "score_pct": score_pct
         })
 
-        # Select candidate with highest matched words, breaking ties with percentage
         if (matched_count > best_matched_count) or (
             matched_count == best_matched_count and score_pct > best_score
         ):
@@ -110,7 +112,7 @@ def dictionary_attack(ciphertext: str, dict_path: str = DEFAULT_DICT_PATH) -> Di
 
 
 if __name__ == "__main__":
-    from .shift_cipher import encrypt
+    from shift_cipher import encrypt
 
     test_msg = "CRYPTANALYSIS OF SHIFT CIPHER USING DICTIONARY ATTACK IS FAST AND SIMPLE"
     actual_k = 13

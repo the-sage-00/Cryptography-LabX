@@ -13,7 +13,11 @@ Formula:
 
 from typing import Dict, List, Tuple
 from collections import Counter
-from .shift_cipher import decrypt
+
+try:
+    from .shift_cipher import decrypt
+except ImportError:
+    from shift_cipher import decrypt
 
 
 # Standard English letter frequency distribution (Beker & Piper, 1982)
@@ -63,7 +67,7 @@ def chi_square_attack(ciphertext: str) -> Dict:
         ciphertext: The encrypted text to analyze.
 
     Returns:
-        Dictionary containing predicted_key, predicted_plaintext, min_chi_square, and all_candidates.
+        Dictionary containing predicted_key, predicted_plaintext, min_chi_square, and candidates.
     """
     candidates = []
     best_key = 0
@@ -94,7 +98,7 @@ def chi_square_attack(ciphertext: str) -> Dict:
 
 
 if __name__ == "__main__":
-    from .shift_cipher import encrypt
+    from shift_cipher import encrypt
 
     test_msg = "CHI SQUARE ANALYSIS EVALUATES LETTER FREQUENCIES TO PREDICT THE KEY ACCURATELY"
     actual_k = 18

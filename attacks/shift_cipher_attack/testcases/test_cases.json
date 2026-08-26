@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "description": "Standard Medium Text with Spaces",
+    "plaintext": "THE QUICK BROWN FOX JUMPS OVER THE LAZY DOG AND RUNS AWAY SAFELY",
+    "key": 7
+  },
+  {
+    "id": 2,
+    "description": "Long Technical Text",
+    "plaintext": "CRYPTANALYSIS IS THE STUDY OF ANALYZING INFORMATION SYSTEMS IN ORDER TO STUDY THE HIDDEN ASPECTS OF THE SYSTEMS AND BREAK CIPHERS",
+    "key": 15
+  },
+  {
+    "id": 3,
+    "description": "Short Text (3 words)",
+    "plaintext": "DEFEND THE CASTLE",
+    "key": 3
+  },
+  {
+    "id": 4,
+    "description": "Continuous Text Without Spaces",
+    "plaintext": "DEFENDTHEEASTWALLOFTHECASTLEATDAWN",
+    "key": 12
+  },
+  {
+    "id": 5,
+    "description": "Unusual Letter Frequencies (High Z/J/Q/X counts)",
+    "plaintext": "JAZZ RHYTHM BUZZ QUIZ VEX",
+    "key": 19
+  }
+]
