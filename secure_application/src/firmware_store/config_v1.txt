@@ -1,0 +1,3 @@
+DEVICE_NAME=SmartThermostat
+PORT=8080
+BAUD_RATE=9600
