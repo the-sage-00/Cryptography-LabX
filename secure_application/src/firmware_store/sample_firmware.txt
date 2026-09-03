@@ -1,0 +1,3 @@
+Sample IoT Firmware
+Version: 1.0
+Device Type: Smart Device
