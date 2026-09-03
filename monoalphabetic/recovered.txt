@@ -1,0 +1,57 @@
+National Institute of Standards and Technology. Federal information processing standard
+publication 198-1: The keyed-hash message authentication code (HMAC), July 2008.
+National Institute of Standards and Technology. Federal information processing standards
+publication 186-4: Digital signature standard (DSS), July 2013.
+National Institute of Standards and Technology. Federal information processing standards
+publication 186-5 (draft): Digital signature standard (DSS), October 2019. Available at
+https://doi.org/10.6028/NIST.FIPS.186-5-draft.
+V.I. Nechaev . Complexity of a determinate algorithm for the discrete logarithm. Mathematical
+Notes, 55(2):165–172, 1994.
+M.A. Nielsen and I.L. Chuang . Quantum Computation and Quantum Information: 10th
+Anniversary Edition. Cambridge University Press, 2011.
+Y. Nir and A. Langley . ChaCha20 and Poly1305 for IETF protocols, 2018. RFC 8439, available
+at https://tools.ietf.org/html/rfc8439.
+P. Oechslin . Making a faster cryptanalytic time-memory trade-off. In 0 =1Crypto Advances in
+Cryptology—Crypto 2003, volume 2729 of 0 =1LNCSLNCS, pages 617–630. Springer, 2003.
+C. Paar and J. Pelzl . Understanding Cryptography. Springer, 2010.
+P. Paillier . Public-key cryptosystems based on composite degree residuosity classes. In 0
+=1Eurocrypt Advances in Cryptology—Eurocrypt ‘99, volume 1592 of 0 =1LNCSLNCS, pages
+223–238. Springer, 1999.
+E. Petrank and C. Rackoff . CBC MAC for real-time data sources. Journal of Cryptology,
+13(3):315–338, 2000.
+S. Pohlig and M. Hellman . An improved algorithm for computing logarithms over GF(p) and its
+cryptographic significance. IEEE Transactions Information Theory, 24(1):106–110, 1978.
+J.M. Pollard . Theorems of factorization and primality testing. Proceedings of the Cambridge
+Philosophical Society, 76:521–528, 1974.
+J.M. Pollard . A Monte Carlo method for factorization. BIT Numerical Mathematics,
+15(3):331–334, 1975.
+J.M. Pollard . Monte Carlo methods for index computation (mod p). Mathematics of
+Computation, 32(143):918–924, 1978.
+C. Pomerance . The quadratic sieve factoring algorithm. In 0 =1Eurocrypt Advances in
+Cryptology—Eurocrypt ‘84, volume 209 of 0 =1LNCSLNCS, pages 169–182. Springer, 1985.
+B. Preneel , R. Govaerts , and J. Vandewalle . Hash functions based on block ciphers: A
+synthetic approach. In 0 =1Crypto Advances in Cryptology—Crypto ‘93, volume 773 of 0
+=1LNCSLNCS, pages 368–378. Springer, 1994.
+M.O. Rabin . Digitalized signatures. In R.A. DeMillo , D.P. Dobkin , A.K. Jones , and R.J. Lipton
+, editors, Foundations of Secure Computation, pages 155–168. Academic Press, 1978.
+M.O. Rabin . Digitalized signatures as intractable as factorization. Technical Report TR-212,
+MIT/LCS, 1979.
+M.O. Rabin . Probabilistic algorithm for testing primality. Journal of Number Theory,
+12(1):128–138, 1980.
+C. Rackoff and D.R. Simon . Non-interactive zero-knowledge proof of knowledge and chosen
+ciphertext attack. In 0 =1Crypto Advances in Cryptology—Crypto ‘91, volume 576 of 0
+=1LNCSLNCS, pages 433–444. Springer, 1992.
+O. Regev . On lattices, learning with errors, random linear codes, and cryptography. Journal of
+the ACM, 56(6):34:1–34:40, 2009.
+E. Rescorla . The transport layer security (TLS) protocol version 1.3, 2018. RFC 8446, available
+at https://tools.ietf.org/html/rfc8446.
+R. Rivest , A. Shamir , and L. Adleman . A method for obtaining digital signatures and publickey cryptosystems. Communications of the ACM, 21(2):120–126, 1978.
+P. Rogaway . Nonce-based symmetric encryption. In 0 =1FSEFast Software Encryption—FSE
+2004, volume 3017 of 0 =1LNCSLNCS, pages 348–359. Springer, 2004.
+P. Rogaway and T. Shrimpton . Cryptographic hash-function basics: Definitions, implications,
+and separations for preimage resistance, second-preimage resistance, and collision resistance.
+In 0 =1FSEFast Software Encryption—FSE 2004, volume 3017 of 0 =1LNCSLNCS, pages
+371–388. Springer, 2004.
+J. Rompel . One-way functions are necessary and sufficient for secure signatures. In
+Proceedings of the 22nd Annual ACM Symposium on Theory of Computing, pages 387–394.
+ACM, 1990.

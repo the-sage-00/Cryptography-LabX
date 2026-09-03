@@ -1,0 +1,581 @@
+========================================
+MONOALPHABETIC SUBSTITUTION CIPHER
+GROUP 10
+========================================
+
+Plaintext loaded successfully.
+
+========================================
+SUBSTITUTION KEY
+========================================
+Plain : ABCDEFGHIJKLMNOPQRSTUVWXYZ
+Cipher: QWERTYUIOPASDFGHJKLZXCVBNM
+
+Individual mappings:
+A -> Q
+B -> W
+C -> E
+D -> R
+E -> T
+F -> Y
+G -> U
+H -> I
+I -> O
+J -> P
+K -> A
+L -> S
+M -> D
+N -> F
+O -> G
+P -> H
+Q -> J
+R -> K
+S -> L
+T -> Z
+U -> X
+V -> C
+W -> V
+X -> B
+Y -> N
+Z -> M
+
+Ciphertext generated successfully.
+
+========================================
+LETTER FREQUENCY ANALYSIS
+========================================
+Letter	Count	Percentage
+Q	255	9.06828%
+G	232	8.25036%
+T	229	8.14367%
+F	224	7.96586%
+Z	219	7.78805%
+O	213	7.57468%
+K	208	7.39687%
+L	187	6.65007%
+E	156	5.54765%
+S	126	4.4808%
+H	112	3.98293%
+R	103	3.66287%
+D	93	3.30725%
+U	81	2.88051%
+Y	79	2.80939%
+N	68	2.41821%
+I	63	2.2404%
+X	60	2.13371%
+W	28	0.995733%
+C	28	0.995733%
+P	13	0.462304%
+A	13	0.462304%
+V	9	0.320057%
+M	7	0.248933%
+J	3	0.106686%
+B	3	0.106686%
+
+Most frequent ciphertext letters:
+Q (255) -> G (232) -> T (229) -> F (224) -> Z (219) 
+
+========================================
+WORD FREQUENCY ANALYSIS
+========================================
+Word	Frequency
+QFR	23
+GY	22
+OF	14
+Q	10
+YGK	10
+HQUTL	9
+LHKOFUTK	8
+ZIT	8
+D	8
+P	7
+SFELSFEL	7
+H	7
+CGSXDT	7
+EKNHZG	6
+EKNHZGSGUN	6
+OFYGKDQZOGF	5
+LZQFRQKRL	5
+QRCQFETL	5
+K	5
+QSUGKOZID	4
+
+One-letter words:
+Q -> 10
+D -> 8
+P -> 7
+H -> 7
+K -> 5
+G -> 4
+E -> 4
+T -> 2
+S -> 2
+R -> 2
+O -> 2
+Z -> 1
+C -> 1
+A -> 1
+W -> 1
+L -> 1
+N -> 1
+
+Two-letter words:
+GY -> 22
+OF -> 14
+GF -> 4
+QZ -> 3
+QL -> 2
+ZI -> 1
+ZK -> 1
+QF -> 1
+UY -> 1
+FR -> 1
+
+Three-letter words:
+QFR -> 23
+YGK -> 10
+ZIT -> 8
+QED -> 4
+KYE -> 4
+GKU -> 3
+YLT -> 2
+RLL -> 2
+SEL -> 1
+QKT -> 1
+RGO -> 1
+DOZ -> 1
+DGR -> 1
+ZSL -> 1
+ATN -> 1
+WOZ -> 1
+VQN -> 1
+DQE -> 1
+GFT -> 1
+GYY -> 1
+FGF -> 1
+EWE -> 1
+OZL -> 1
+FOK -> 1
+
+========================================
+PATTERN ANALYSIS
+========================================
+FQZOGFQS	Pattern: 0 1 2 3 4 0 1 5 
+OFLZOZXZT	Pattern: 0 1 2 3 0 3 4 3 5 
+LZQFRQKRL	Pattern: 0 1 2 3 4 2 5 4 0 
+QFR	Pattern: 0 1 2 
+ZTEIFGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 8 
+YTRTKQS	Pattern: 0 1 2 1 3 4 5 
+OFYGKDQZOGF	Pattern: 0 1 2 3 4 5 6 7 0 3 1 
+HKGETLLOFU	Pattern: 0 1 2 3 4 5 5 6 7 8 
+LZQFRQKR	Pattern: 0 1 2 3 4 2 5 4 
+HXWSOEQZOGF	Pattern: 0 1 2 3 4 5 6 7 4 8 9 
+ZIT	Pattern: 0 1 2 
+ATNTR	Pattern: 0 1 2 1 3 
+IQLI	Pattern: 0 1 2 0 
+DTLLQUT	Pattern: 0 1 2 2 3 4 1 
+QXZITFZOEQZOGF	Pattern: 0 1 2 3 4 5 2 6 7 0 2 6 8 5 
+EGRT	Pattern: 0 1 2 3 
+IDQE	Pattern: 0 1 2 3 
+PXSN	Pattern: 0 1 2 3 
+FQZOGFQS	Pattern: 0 1 2 3 4 0 1 5 
+OFLZOZXZT	Pattern: 0 1 2 3 0 3 4 3 5 
+LZQFRQKRL	Pattern: 0 1 2 3 4 2 5 4 0 
+QFR	Pattern: 0 1 2 
+ZTEIFGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 8 
+YTRTKQS	Pattern: 0 1 2 1 3 4 5 
+OFYGKDQZOGF	Pattern: 0 1 2 3 4 5 6 7 0 3 1 
+HKGETLLOFU	Pattern: 0 1 2 3 4 5 5 6 7 8 
+LZQFRQKRL	Pattern: 0 1 2 3 4 2 5 4 0 
+HXWSOEQZOGF	Pattern: 0 1 2 3 4 5 6 7 4 8 9 
+ROUOZQS	Pattern: 0 1 2 1 3 4 5 
+LOUFQZXKT	Pattern: 0 1 2 3 4 5 6 7 8 
+LZQFRQKR	Pattern: 0 1 2 3 4 2 5 4 
+RLL	Pattern: 0 1 1 
+PXSN	Pattern: 0 1 2 3 
+FQZOGFQS	Pattern: 0 1 2 3 4 0 1 5 
+OFLZOZXZT	Pattern: 0 1 2 3 0 3 4 3 5 
+LZQFRQKRL	Pattern: 0 1 2 3 4 2 5 4 0 
+QFR	Pattern: 0 1 2 
+ZTEIFGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 8 
+YTRTKQS	Pattern: 0 1 2 1 3 4 5 
+OFYGKDQZOGF	Pattern: 0 1 2 3 4 5 6 7 0 3 1 
+HKGETLLOFU	Pattern: 0 1 2 3 4 5 5 6 7 8 
+LZQFRQKRL	Pattern: 0 1 2 3 4 2 5 4 0 
+HXWSOEQZOGF	Pattern: 0 1 2 3 4 5 6 7 4 8 9 
+RKQYZ	Pattern: 0 1 2 3 4 
+ROUOZQS	Pattern: 0 1 2 1 3 4 5 
+LOUFQZXKT	Pattern: 0 1 2 3 4 5 6 7 8 
+LZQFRQKR	Pattern: 0 1 2 3 4 2 5 4 
+RLL	Pattern: 0 1 1 
+GEZGWTK	Pattern: 0 1 2 0 3 4 5 
+QCQOSQWST	Pattern: 0 1 0 2 3 0 4 3 5 
+IZZHL	Pattern: 0 1 1 2 3 
+RGO	Pattern: 0 1 2 
+GKU	Pattern: 0 1 2 
+FOLZ	Pattern: 0 1 2 3 
+YOHL	Pattern: 0 1 2 3 
+RKQYZ	Pattern: 0 1 2 3 4 
+FTEIQTC	Pattern: 0 1 2 3 4 1 5 
+EGDHSTBOZN	Pattern: 0 1 2 3 4 5 6 7 8 9 
+RTZTKDOFQZT	Pattern: 0 1 2 1 3 4 5 6 7 2 1 
+QSUGKOZID	Pattern: 0 1 2 3 4 5 6 7 8 
+YGK	Pattern: 0 1 2 
+ZIT	Pattern: 0 1 2 
+ROLEKTZT	Pattern: 0 1 2 3 4 5 6 5 
+SGUQKOZID	Pattern: 0 1 2 3 4 5 6 7 8 
+DQZITDQZOEQS	Pattern: 0 1 2 3 4 0 1 2 5 6 1 7 
+FGZTL	Pattern: 0 1 2 3 4 
+FOTSLTF	Pattern: 0 1 2 3 4 2 0 
+QFR	Pattern: 0 1 2 
+EIXQFU	Pattern: 0 1 2 3 4 5 
+JXQFZXD	Pattern: 0 1 2 3 4 1 5 
+EGDHXZQZOGF	Pattern: 0 1 2 3 4 5 6 5 7 1 8 
+QFR	Pattern: 0 1 2 
+JXQFZXD	Pattern: 0 1 2 3 4 1 5 
+OFYGKDQZOGF	Pattern: 0 1 2 3 4 5 6 7 0 3 1 
+QFFOCTKLQKN	Pattern: 0 1 1 2 3 4 5 6 0 5 7 
+TROZOGF	Pattern: 0 1 2 3 2 4 5 
+EQDWKORUT	Pattern: 0 1 2 3 4 5 6 7 8 
+XFOCTKLOZN	Pattern: 0 1 2 3 4 5 6 2 7 8 
+HKTLL	Pattern: 0 1 2 3 3 
+FOK	Pattern: 0 1 2 
+QFR	Pattern: 0 1 2 
+SQFUSTN	Pattern: 0 1 2 3 0 4 5 
+EIQEIQ	Pattern: 0 1 2 0 1 2 
+QFR	Pattern: 0 1 2 
+HGSN	Pattern: 0 1 2 3 
+YGK	Pattern: 0 1 2 
+OTZY	Pattern: 0 1 2 3 
+HKGZGEGSL	Pattern: 0 1 2 3 2 4 2 5 6 
+KYE	Pattern: 0 1 2 
+QCQOSQWST	Pattern: 0 1 0 2 3 0 4 3 5 
+IZZHL	Pattern: 0 1 1 2 3 
+ZGGSL	Pattern: 0 1 1 2 3 
+OTZY	Pattern: 0 1 2 3 
+GKU	Pattern: 0 1 2 
+IZDS	Pattern: 0 1 2 3 
+KYE	Pattern: 0 1 2 
+GTEILSOF	Pattern: 0 1 2 3 4 5 6 7 
+DQAOFU	Pattern: 0 1 2 3 4 5 
+YQLZTK	Pattern: 0 1 2 3 4 5 
+EKNHZQFQSNZOE	Pattern: 0 1 2 3 4 5 6 5 7 2 4 8 0 
+ZODT	Pattern: 0 1 2 3 
+DTDGKN	Pattern: 0 1 0 2 3 4 
+ZKQRT	Pattern: 0 1 2 3 4 
+GYY	Pattern: 0 1 1 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+QRCQFETL	Pattern: 0 1 2 0 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+HQQK	Pattern: 0 1 1 2 
+QFR	Pattern: 0 1 2 
+HTSMS	Pattern: 0 1 2 3 2 
+XFRTKLZQFROFU	Pattern: 0 1 2 3 4 5 6 7 1 2 8 1 9 
+EKNHZGUKQHIN	Pattern: 0 1 2 3 4 5 6 1 7 3 8 2 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+HQOSSOTK	Pattern: 0 1 2 3 3 2 4 5 
+HXWSOE	Pattern: 0 1 2 3 4 5 
+ATN	Pattern: 0 1 2 
+EKNHZGLNLZTDL	Pattern: 0 1 2 3 4 5 6 2 6 4 7 8 6 
+WQLTR	Pattern: 0 1 2 3 4 
+EGDHGLOZT	Pattern: 0 1 2 3 1 4 5 6 7 
+RTUKTT	Pattern: 0 1 2 3 1 1 
+KTLORXGLOZN	Pattern: 0 1 2 3 4 5 6 2 3 7 8 
+ESQLLTL	Pattern: 0 1 2 3 3 4 3 
+TXKGEKNHZ	Pattern: 0 1 2 3 4 2 5 6 7 
+QRCQFETL	Pattern: 0 1 2 0 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+TXKGEKNHZ	Pattern: 0 1 2 3 4 2 5 6 7 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+HTZKQFA	Pattern: 0 1 2 3 4 5 6 
+QFR	Pattern: 0 1 2 
+KQEAGYY	Pattern: 0 1 2 3 4 5 5 
+EWE	Pattern: 0 1 0 
+DQE	Pattern: 0 1 2 
+YGK	Pattern: 0 1 2 
+KTQS	Pattern: 0 1 2 3 
+ZODT	Pattern: 0 1 2 3 
+RQZQ	Pattern: 0 1 2 1 
+LGXKETL	Pattern: 0 1 2 3 4 5 0 
+PGXKFQS	Pattern: 0 1 2 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+HGISOU	Pattern: 0 1 2 3 4 5 
+QFR	Pattern: 0 1 2 
+ITSSDQF	Pattern: 0 1 2 2 3 4 5 
+ODHKGCTR	Pattern: 0 1 2 3 4 5 6 7 
+QSUGKOZID	Pattern: 0 1 2 3 4 5 6 7 8 
+YGK	Pattern: 0 1 2 
+EGDHXZOFU	Pattern: 0 1 2 3 4 5 6 7 8 
+SGUQKOZIDL	Pattern: 0 1 2 3 4 5 6 7 8 9 
+GCTK	Pattern: 0 1 2 3 
+QFR	Pattern: 0 1 2 
+OZL	Pattern: 0 1 2 
+EKNHZGUKQHIOE	Pattern: 0 1 2 3 4 5 6 1 7 3 8 9 0 
+LOUFOYOEQFET	Pattern: 0 1 2 3 1 4 1 5 6 3 5 7 
+OTTT	Pattern: 0 1 1 1 
+ZKQFLQEZOGFL	Pattern: 0 1 2 3 4 2 5 0 6 7 3 4 
+OFYGKDQZOGF	Pattern: 0 1 2 3 4 5 6 7 0 3 1 
+ZITGKN	Pattern: 0 1 2 3 4 5 
+HGSSQKR	Pattern: 0 1 2 2 3 4 5 
+ZITGKTDL	Pattern: 0 1 2 3 4 2 5 6 
+YQEZGKOMQZOGF	Pattern: 0 1 2 3 4 5 6 7 1 3 6 4 8 
+QFR	Pattern: 0 1 2 
+HKODQSOZN	Pattern: 0 1 2 3 4 5 2 6 7 
+ZTLZOFU	Pattern: 0 1 2 0 3 4 5 
+HKGETTROFUL	Pattern: 0 1 2 3 4 4 5 6 7 8 9 
+ZIT	Pattern: 0 1 2 
+EQDWKORUT	Pattern: 0 1 2 3 4 5 6 7 8 
+HIOSGLGHIOEQS	Pattern: 0 1 2 3 4 5 4 0 1 2 6 7 3 
+LGEOTZN	Pattern: 0 1 2 3 4 5 6 
+HGSSQKR	Pattern: 0 1 2 2 3 4 5 
+DGFZT	Pattern: 0 1 2 3 4 
+EQKSG	Pattern: 0 1 2 3 4 
+DTZIGR	Pattern: 0 1 2 3 4 5 
+YGK	Pattern: 0 1 2 
+YQEZGKOMQZOGF	Pattern: 0 1 2 3 4 5 6 7 1 3 6 4 8 
+WOZ	Pattern: 0 1 2 
+FXDTKOEQS	Pattern: 0 1 2 3 4 5 6 7 8 
+DQZITDQZOEL	Pattern: 0 1 2 3 4 0 1 2 5 6 7 
+HGSSQKR	Pattern: 0 1 2 2 3 4 5 
+DGFZT	Pattern: 0 1 2 3 4 
+EQKSG	Pattern: 0 1 2 3 4 
+DTZIGRL	Pattern: 0 1 2 3 4 5 6 
+YGK	Pattern: 0 1 2 
+OFRTB	Pattern: 0 1 2 3 4 
+EGDHXZQZOGF	Pattern: 0 1 2 3 4 5 6 5 7 1 8 
+DGR	Pattern: 0 1 2 
+DQZITDQZOEL	Pattern: 0 1 2 3 4 0 1 2 5 6 7 
+EGDHXZQZOGF	Pattern: 0 1 2 3 4 5 6 5 7 1 8 
+HGDTKQFET	Pattern: 0 1 2 3 4 5 6 7 3 
+ZIT	Pattern: 0 1 2 
+JXQRKQZOE	Pattern: 0 1 2 3 4 2 5 6 7 
+LOTCT	Pattern: 0 1 2 3 2 
+YQEZGKOFU	Pattern: 0 1 2 3 4 5 6 7 8 
+QSUGKOZID	Pattern: 0 1 2 3 4 5 6 7 8 
+TXKGEKNHZ	Pattern: 0 1 2 3 4 2 5 6 7 
+QRCQFETL	Pattern: 0 1 2 0 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+TXKGEKNHZ	Pattern: 0 1 2 3 4 2 5 6 7 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+HKTFTTS	Pattern: 0 1 2 3 2 2 4 
+UGCQTKZL	Pattern: 0 1 2 3 4 5 6 7 
+QFR	Pattern: 0 1 2 
+CQFRTVQSST	Pattern: 0 1 2 3 4 5 1 6 6 4 
+IQLI	Pattern: 0 1 2 0 
+YXFEZOGFL	Pattern: 0 1 2 3 4 5 6 2 7 
+WQLTR	Pattern: 0 1 2 3 4 
+WSGEA	Pattern: 0 1 2 3 4 
+EOHITKL	Pattern: 0 1 2 3 4 5 6 
+LNFZITZOE	Pattern: 0 1 2 3 4 5 3 6 7 
+QHHKGQEI	Pattern: 0 1 1 2 3 0 4 5 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+QRCQFETL	Pattern: 0 1 2 0 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+KQWOF	Pattern: 0 1 2 3 4 
+ROUOZQSOMTR	Pattern: 0 1 2 1 3 4 5 1 6 7 0 
+LOUFQZXKTL	Pattern: 0 1 2 3 4 5 6 7 8 0 
+RTDOSSG	Pattern: 0 1 2 3 4 4 5 
+RGWAOF	Pattern: 0 1 2 3 4 5 
+PGFTL	Pattern: 0 1 2 3 4 
+QFR	Pattern: 0 1 2 
+SOHZGF	Pattern: 0 1 2 3 4 5 
+TROZGKL	Pattern: 0 1 2 3 4 5 6 
+YGXFRQZOGFL	Pattern: 0 1 2 3 4 5 6 7 1 3 8 
+LTEXKT	Pattern: 0 1 2 3 4 1 
+EGDHXZQZOGF	Pattern: 0 1 2 3 4 5 6 5 7 1 8 
+HQUTL	Pattern: 0 1 2 3 4 
+QEQRTDOE	Pattern: 0 1 0 2 3 4 5 1 
+HKTLL	Pattern: 0 1 2 3 3 
+KQWOF	Pattern: 0 1 2 3 4 
+ROUOZQSOMTR	Pattern: 0 1 2 1 3 4 5 1 6 7 0 
+LOUFQZXKTL	Pattern: 0 1 2 3 4 5 6 7 8 0 
+OFZKQEZQWST	Pattern: 0 1 2 3 4 5 2 4 6 7 8 
+YQEZGKOMQZOGF	Pattern: 0 1 2 3 4 5 6 7 1 3 6 4 8 
+ZTEIFOEQS	Pattern: 0 1 2 3 4 5 2 6 7 
+KTHGKZ	Pattern: 0 1 2 3 0 4 
+DOZ	Pattern: 0 1 2 
+SEL	Pattern: 0 1 2 
+KQWOF	Pattern: 0 1 2 3 4 
+HKGWQWOSOLZOE	Pattern: 0 1 2 3 4 3 5 6 5 7 8 5 9 
+QSUGKOZID	Pattern: 0 1 2 3 4 5 6 7 8 
+YGK	Pattern: 0 1 2 
+ZTLZOFU	Pattern: 0 1 2 0 3 4 5 
+HKODQSOZN	Pattern: 0 1 2 3 4 5 2 6 7 
+PGXKFQS	Pattern: 0 1 2 3 4 5 6 
+FXDWTK	Pattern: 0 1 2 3 4 5 
+ZITGKN	Pattern: 0 1 2 3 4 5 
+KQEAGYY	Pattern: 0 1 2 3 4 5 5 
+QFR	Pattern: 0 1 2 
+LODGF	Pattern: 0 1 2 3 4 
+FGF	Pattern: 0 1 0 
+OFZTKQEZOCT	Pattern: 0 1 2 3 4 5 6 2 0 7 3 
+MTKG	Pattern: 0 1 2 3 
+AFGVSTRUT	Pattern: 0 1 2 3 4 5 6 7 5 
+HKGGY	Pattern: 0 1 2 2 3 
+AFGVSTRUT	Pattern: 0 1 2 3 4 5 6 7 5 
+QFR	Pattern: 0 1 2 
+EIGLTF	Pattern: 0 1 2 3 4 5 
+EOHITKZTBZ	Pattern: 0 1 2 3 4 5 6 4 7 6 
+QZZQEA	Pattern: 0 1 1 0 2 3 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+QRCQFETL	Pattern: 0 1 2 0 3 4 5 6 
+EKNHZGSGUN	Pattern: 0 1 2 3 4 5 6 5 7 2 
+EKNHZG	Pattern: 0 1 2 3 4 5 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+KTUTC	Pattern: 0 1 2 1 3 
+SQZZOETL	Pattern: 0 1 2 2 3 4 5 6 
+STQKFOFU	Pattern: 0 1 2 3 4 5 4 6 
+VOZI	Pattern: 0 1 2 3 
+TKKGKL	Pattern: 0 1 1 2 1 3 
+KQFRGD	Pattern: 0 1 2 3 4 5 
+SOFTQK	Pattern: 0 1 2 3 4 5 
+EGRTL	Pattern: 0 1 2 3 4 
+QFR	Pattern: 0 1 2 
+EKNHZGUKQHIN	Pattern: 0 1 2 3 4 5 6 1 7 3 8 2 
+PGXKFQS	Pattern: 0 1 2 3 4 5 6 
+ZIT	Pattern: 0 1 2 
+QED	Pattern: 0 1 2 
+KTLEGKSQ	Pattern: 0 1 2 3 4 0 5 6 
+ZIT	Pattern: 0 1 2 
+ZKQFLHGKZ	Pattern: 0 1 2 3 4 5 6 1 0 
+SQNTK	Pattern: 0 1 2 3 4 
+LTEXKOZN	Pattern: 0 1 2 3 4 5 6 7 
+ZSL	Pattern: 0 1 2 
+HKGZGEGS	Pattern: 0 1 2 3 2 4 2 5 
+CTKLOGF	Pattern: 0 1 2 3 4 5 6 
+KYE	Pattern: 0 1 2 
+QCQOSQWST	Pattern: 0 1 0 2 3 0 4 3 5 
+IZZHL	Pattern: 0 1 1 2 3 
+ZGGSL	Pattern: 0 1 1 2 3 
+OTZY	Pattern: 0 1 2 3 
+GKU	Pattern: 0 1 2 
+IZDS	Pattern: 0 1 2 3 
+KYE	Pattern: 0 1 2 
+KOCTLZ	Pattern: 0 1 2 3 4 5 
+LIQDOK	Pattern: 0 1 2 3 4 5 
+QFR	Pattern: 0 1 2 
+QRSTDQF	Pattern: 0 1 2 3 4 0 5 
+DTZIGR	Pattern: 0 1 2 3 4 5 
+YGK	Pattern: 0 1 2 
+GWZQOFOFU	Pattern: 0 1 2 3 4 5 4 5 6 
+ROUOZQS	Pattern: 0 1 2 1 3 4 5 
+LOUFQZXKTL	Pattern: 0 1 2 3 4 5 6 7 8 0 
+QFR	Pattern: 0 1 2 
+HXWSOEATN	Pattern: 0 1 2 3 4 5 6 7 8 
+EKNHZGLNLZTDL	Pattern: 0 1 2 3 4 5 6 2 6 4 7 8 6 
+EGDDXFOEQZOGFL	Pattern: 0 1 2 2 3 4 5 0 6 7 5 1 4 8 
+ZIT	Pattern: 0 1 2 
+QED	Pattern: 0 1 2 
+KGUQVQN	Pattern: 0 1 2 3 4 3 5 
+FGFET	Pattern: 0 1 0 2 3 
+WQLTR	Pattern: 0 1 2 3 4 
+LNDDTZKOE	Pattern: 0 1 2 2 3 4 5 6 7 
+TFEKNHZOGF	Pattern: 0 1 2 3 4 5 6 7 8 1 
+YLTYQLZ	Pattern: 0 1 2 0 3 1 4 
+LGYZVQKT	Pattern: 0 1 2 3 4 5 6 7 
+TFEKNHZOGF	Pattern: 0 1 2 3 4 5 6 7 8 1 
+YLT	Pattern: 0 1 2 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+KGUQVQN	Pattern: 0 1 2 3 4 3 5 
+QFR	Pattern: 0 1 2 
+LIKODHZGF	Pattern: 0 1 2 3 4 5 6 7 8 
+EKNHZGUKQHIOE	Pattern: 0 1 2 3 4 5 6 1 7 3 8 9 0 
+IQLI	Pattern: 0 1 2 0 
+YXFEZOGF	Pattern: 0 1 2 3 4 5 6 2 
+WQLOEL	Pattern: 0 1 2 3 4 2 
+RTYOFOZOGFL	Pattern: 0 1 2 3 4 3 5 3 6 4 7 
+ODHSOEQZOGFL	Pattern: 0 1 2 3 0 4 5 6 0 7 8 9 
+QFR	Pattern: 0 1 2 
+LTHQKQZOGFL	Pattern: 0 1 2 3 4 3 5 6 7 8 0 
+YGK	Pattern: 0 1 2 
+HKTODQUT	Pattern: 0 1 2 3 4 5 6 2 
+KTLOLZQFET	Pattern: 0 1 2 3 2 4 5 6 7 1 
+LTEGFR	Pattern: 0 1 2 3 4 5 
+HKTODQUT	Pattern: 0 1 2 3 4 5 6 2 
+KTLOLZQFET	Pattern: 0 1 2 3 2 4 5 6 7 1 
+QFR	Pattern: 0 1 2 
+EGSSOLOGF	Pattern: 0 1 2 2 3 4 3 1 5 
+KTLOLZQFET	Pattern: 0 1 2 3 2 4 5 6 7 1 
+YLTYQLZ	Pattern: 0 1 2 0 3 1 4 
+LGYZVQKT	Pattern: 0 1 2 3 4 5 6 7 
+TFEKNHZOGF	Pattern: 0 1 2 3 4 5 6 7 8 1 
+YLT	Pattern: 0 1 2 
+CGSXDT	Pattern: 0 1 2 3 4 5 
+SFELSFEL	Pattern: 0 1 2 3 0 1 2 3 
+HQUTL	Pattern: 0 1 2 3 4 
+LHKOFUTK	Pattern: 0 1 2 3 4 5 6 2 
+KGDHTS	Pattern: 0 1 2 3 4 5 
+GFT	Pattern: 0 1 2 
+VQN	Pattern: 0 1 2 
+YXFEZOGFL	Pattern: 0 1 2 3 4 5 6 2 7 
+QKT	Pattern: 0 1 2 
+FTETLLQKN	Pattern: 0 1 2 1 3 3 4 5 6 
+QFR	Pattern: 0 1 2 
+LXYYOEOTFZ	Pattern: 0 1 2 2 3 4 3 5 6 7 
+YGK	Pattern: 0 1 2 
+LTEXKT	Pattern: 0 1 2 3 4 1 
+LOUFQZXKTL	Pattern: 0 1 2 3 4 5 6 7 8 0 
+HKGETTROFUL	Pattern: 0 1 2 3 4 4 5 6 7 8 9 
+ZIT	Pattern: 0 1 2 
+QFFXQS	Pattern: 0 1 1 2 0 3 
+QED	Pattern: 0 1 2 
+LNDHGLOXD	Pattern: 0 1 2 3 4 0 5 6 2 
+ZITGKN	Pattern: 0 1 2 3 4 5 
+EGDHXZOFU	Pattern: 0 1 2 3 4 5 6 7 8 
+HQUTL	Pattern: 0 1 2 3 4 
+QED	Pattern: 0 1 2 
+
+========================================
+PARTIAL PLAINTEXT
+========================================
+________ _________ __ _________ ___ __________. _______ ___________ __________ ________
+___________ 198-1: ___ _____-____ _______ ______________ ____ (____), ____ 2008.
+________ _________ __ _________ ___ __________. _______ ___________ __________ _________
+___________ 186-4: _______ _________ ________ (___), ____ 2013.
+________ _________ __ _________ ___ __________. _______ ___________ __________ _________
+___________ 186-5 (_____): _______ _________ ________ (___), _______ 2019. _________ __
+_____://___.___/10.6028/____.____.186-5-_____.
+_._. _______ . __________ __ _ ___________ _________ ___ ___ ________ _________. ____________
+_____, 55(2):165–172, 1994.
+_._. _______ ___ _._. ______ . _______ ___________ ___ _______ ___________: 10__
+___________ _______. _________ __________ _____, 2011.
+_. ___ ___ _. _______ . ______20 ___ ____1305 ___ ____ _________, 2018. ___ 8439, _________
+__ _____://_____.____.___/____/___8439.
+_. ________ . ______ _ ______ _____________ ____-______ _____-___. __ 0 =1______ ________ __
+__________—______ 2003, ______ 2729 __ 0 =1________, _____ 617–630. ________, 2003.
+_. ____ ___ _. _____ . _____________ ____________. ________, 2010.
+_. ________ . ______-___ _____________ _____ __ _________ ______ ___________ _______. __ 0
+=1_________ ________ __ __________—_________ ‘99, ______ 1592 __ 0 =1________, _____
+223–238. ________, 1999.
+_. _______ ___ _. _______ . ___ ___ ___ ____-____ ____ _______. _______ __ __________,
+13(3):315–338, 200
+...
+
+Recovered plaintext generated.
+
+========================================
+VERIFICATION
+========================================
+SUCCESS: Re-encryption matches ciphertext.
