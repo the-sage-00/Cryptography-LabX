@@ -1,0 +1,31 @@
+A central goal of modern cryptography, in contrast to classical cryptography, is the
+development of rigorous definitions of security based on the precise mathematical
+models and assumptions that underlie cryptographic constructions. In this chapter, we
+develop some of the key ideas behind this approach. We begin by discussing the syntax
+of private key encryption, which specifies the functionality of an encryption scheme
+and the ways in which the communicating parties are assumed to behave. We then
+discuss the threat model, which characterizes the power of the adversary who is
+attacking the scheme. After establishing a definition of security, we show that the
+one time pad satisfies this definition. We also explore the inherent limitations of
+information theoretic security and thereby motivate the computational approach that
+will be developed in the rest of the book. The treatment here is relatively informal
+with the aim of building intuition rather than providing a completely rigorous
+development. A thorough development of private key encryption is given in later
+chapters. We conclude by considering historical ciphers and showing that they do
+not satisfy reasonable definitions of security. Two classical ciphers serve as our
+primary examples throughout this chapter and will be used repeatedly in later
+chapters as well. The first of these ciphers is the shift cipher. This scheme works
+by shifting every letter of the plaintext by a fixed amount. More formally, we can
+identify the letters of the English alphabet with the integers in the set of numbers
+from zero through twenty five. The key in the shift cipher is a number between zero
+and twenty five. To encrypt a message, each letter of the plaintext is shifted forward
+by the key with wraparound. For example, if the key is three then a maps to d and
+b maps to e and so on. Decryption reverses the process by shifting each letter of the
+ciphertext backward by the key. The second classical cipher we consider is the mono
+alphabetic substitution cipher. Here the key defines an arbitrary mapping from each
+letter to some other letter. To encrypt a message, each letter of the plaintext is
+replaced by the corresponding letter as given by the key. Encryption is reversed by
+applying the inverse mapping. The key space of the substitution cipher is much larger
+than that of the shift cipher. In particular there are twenty six factorial possible
+keys rather than merely twenty six. Despite this the substitution cipher can be broken
+relatively easily using techniques of frequency analysis as we will show.

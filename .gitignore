@@ -1,7 +1,10 @@
-# Byte-compiled / optimized / DLL files
+# Byte-compiled / optimized / DLL / Executable files
 __pycache__/
 *.py[cod]
 *$py.class
+*.exe
+*.db
+
 
 # Virtual environments
 venv/
@@ -25,3 +28,9 @@ Thumbs.db
 outputs/*.txt
 outputs/*.csv
 !outputs/.gitkeep
+!attacks/mono_substitution_attack/outputs/ciphertext.txt
+!attacks/**/.gitkeep
+
+# Local study / guide notes
+*Guide.md
+*guide.md
