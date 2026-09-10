@@ -5,9 +5,13 @@
 #include <map>
 #include <algorithm>
 #include <cmath>
+#include <cctype>
 
 using namespace std;
 
+
+
+// 1. Clean ciphertext
 
 string clean_ciphertext(string text)
 {
@@ -23,6 +27,9 @@ string clean_ciphertext(string text)
 }
 
 
+
+// 2. Find repeated 3-letter patterns
+
 vector<string> find_repeated_patterns(string text)
 {
     vector<string> patterns;
@@ -31,33 +38,41 @@ vector<string> find_repeated_patterns(string text)
     {
         string pattern = text.substr(i, 3);
 
-        bool found = false;
+        bool repeated = false;
 
-        for (string p : patterns)
+        for (int j = i + 3; j <= (int)text.length() - 3; j++)
         {
-            if (p == pattern)
+            if (text.substr(j, 3) == pattern)
             {
-                found = true;
+                repeated = true;
                 break;
             }
         }
 
-        if (!found)
+        if (repeated)
         {
-            for (int j = i + 3; j <= (int)text.length() - 3; j++)
+            bool already_present = false;
+
+            for (string p : patterns)
             {
-                if (text.substr(j, 3) == pattern)
+                if (p == pattern)
                 {
-                    patterns.push_back(pattern);
+                    already_present = true;
                     break;
                 }
             }
+
+            if (!already_present)
+                patterns.push_back(pattern);
         }
     }
 
     return patterns;
 }
 
+
+
+// 3. Calculate distances
 
 vector<int> calculate_distances(string text, string pattern)
 {
@@ -83,6 +98,9 @@ vector<int> calculate_distances(string text, string pattern)
 }
 
 
+
+// 4. Find factors
+
 vector<int> find_factors(int distance)
 {
     vector<int> factors;
@@ -97,18 +115,23 @@ vector<int> find_factors(int distance)
 }
 
 
-int kasiski_analysis(string text)
+
+// 5. Kasiski analysis
+// Returns candidate key lengths
+
+vector<int> kasiski_analysis(string text)
 {
     vector<string> patterns = find_repeated_patterns(text);
+
     map<int, int> factor_count;
 
-    cout << "\nRepeated patterns and distances:\n";
+    cout << "\nKASISKI ANALYSIS\n";
 
     for (string pattern : patterns)
     {
         vector<int> distances = calculate_distances(text, pattern);
 
-        cout << pattern << " : ";
+        cout << "Pattern " << pattern << " : ";
 
         for (int d : distances)
         {
@@ -123,72 +146,102 @@ int kasiski_analysis(string text)
         cout << endl;
     }
 
-    int best_length = 1;
-    int best_count = 0;
+    // Sort factors according to frequency
+    vector<pair<int, int>> factors;
 
     for (auto x : factor_count)
+        factors.push_back(x);
+
+    sort(factors.begin(), factors.end(),
+         [](pair<int, int> a, pair<int, int> b)
+         {
+             return a.second > b.second;
+         });
+
+    cout << "\nKasiski candidate key lengths:\n";
+
+    vector<int> candidates;
+
+    for (int i = 0; i < (int)factors.size() && i < 8; i++)
     {
-        if (x.second > best_count)
-        {
-            best_count = x.second;
-            best_length = x.first;
-        }
+        cout << factors[i].first
+             << " (count = "
+             << factors[i].second
+             << ")\n";
+
+        candidates.push_back(factors[i].first);
     }
 
-    return best_length;
+    return candidates;
 }
 
+
+
+// 6. Calculate Index of Coincidence
 
 double calculate_ic(string group)
 {
     int n = group.length();
 
     if (n <= 1)
-        return 0;
+        return 0.0;
 
-    int freq[26] = {0};
+    int frequency[26] = {0};
 
     for (char c : group)
-        freq[c - 'A']++;
+        frequency[c - 'A']++;
 
-    int sum = 0;
+    int numerator = 0;
 
     for (int i = 0; i < 26; i++)
-        sum += freq[i] * (freq[i] - 1);
+        numerator += frequency[i] * (frequency[i] - 1);
 
-    return (double)sum / (n * (n - 1));
+    return (double)numerator / (n * (n - 1));
 }
 
+
+
+// 7. Split ciphertext into groups
 
 vector<string> split_into_groups(string text, int keyLength)
 {
     vector<string> groups(keyLength);
 
     for (int i = 0; i < (int)text.length(); i++)
+    {
         groups[i % keyLength] += text[i];
+    }
 
     return groups;
 }
 
 
+
+// 8. Frequency analysis
+
 void frequency_analysis(string group)
 {
-    int freq[26] = {0};
+    int frequency[26] = {0};
 
     for (char c : group)
-        freq[c - 'A']++;
+        frequency[c - 'A']++;
 
     for (int i = 0; i < 26; i++)
     {
-        cout << char('A' + i) << ":" << freq[i] << " ";
+        cout << char('A' + i)
+             << ":" << frequency[i] << " ";
     }
 
     cout << endl;
 }
 
 
+
+// 9. Find Caesar shift
+
 int find_shift(string group)
 {
+    
     double english[26] =
     {
         0.082, 0.015, 0.028, 0.043, 0.127, 0.022,
@@ -198,16 +251,17 @@ int find_shift(string group)
         0.020, 0.00074
     };
 
-    int freq[26] = {0};
+    int frequency[26] = {0};
 
     for (char c : group)
-        freq[c - 'A']++;
+        frequency[c - 'A']++;
 
     int n = group.length();
 
     double bestScore = 1e100;
     int bestShift = 0;
 
+   
     for (int shift = 0; shift < 26; shift++)
     {
         double score = 0;
@@ -220,8 +274,9 @@ int find_shift(string group)
 
             if (expected > 0)
             {
-                double difference = freq[i] - expected;
-                score += difference * difference / expected;
+                double difference = frequency[i] - expected;
+
+                score += (difference * difference) / expected;
             }
         }
 
@@ -236,19 +291,26 @@ int find_shift(string group)
 }
 
 
+
+// 10. Find probable key
+
 string find_key(vector<string> groups)
 {
-    string key;
+    string key = "";
 
     for (string group : groups)
     {
         int shift = find_shift(group);
+
         key += char('A' + shift);
     }
 
     return key;
 }
 
+
+
+// 11. Vigenere decryption
 
 string vigenere_decrypt(string ciphertext, string key)
 {
@@ -257,6 +319,7 @@ string vigenere_decrypt(string ciphertext, string key)
     for (int i = 0; i < (int)ciphertext.length(); i++)
     {
         int c = ciphertext[i] - 'A';
+
         int k = key[i % key.length()] - 'A';
 
         int p = (c - k + 26) % 26;
@@ -268,6 +331,9 @@ string vigenere_decrypt(string ciphertext, string key)
 }
 
 
+
+// 12. Vigenere encryption
+
 string vigenere_encrypt(string plaintext, string key)
 {
     string ciphertext = "";
@@ -275,6 +341,7 @@ string vigenere_encrypt(string plaintext, string key)
     for (int i = 0; i < (int)plaintext.length(); i++)
     {
         int p = plaintext[i] - 'A';
+
         int k = key[i % key.length()] - 'A';
 
         int c = (p + k) % 26;
@@ -286,65 +353,156 @@ string vigenere_encrypt(string plaintext, string key)
 }
 
 
+
+// 13. Verify
+
 bool verify(string original, string encrypted)
 {
     return original == encrypted;
 }
 
+
 int main()
 {
+    // Read ciphertext
     ifstream file("ciphertext.txt");
 
     string input;
     string line;
 
     while (getline(file, line))
+    {
         input += line;
+    }
 
+    file.close();
+
+
+    // Step 1: Clean ciphertext
     string ciphertext = clean_ciphertext(input);
 
-    cout << "Cleaned ciphertext:\n";
+    cout << "CLEANED CIPHERTEXT\n";
     cout << ciphertext << "\n";
 
-   
-    int keyLength = kasiski_analysis(ciphertext);
+    cout << "\nTotal characters: "
+         << ciphertext.length() << endl;
 
-    cout << "\nEstimated key length: " << keyLength << endl;
 
-   
-    vector<string> groups = split_into_groups(ciphertext, keyLength);
+    // Step 2: Kasiski
+    vector<int> candidates = kasiski_analysis(ciphertext);
 
-    cout << "\nFrequency tables:\n";
+
+    // If no candidates were found
+    if (candidates.empty())
+    {
+        cout << "\nNo Kasiski candidates found.\n";
+        return 0;
+    }
+
+
+    // Step 3: Use IC to select correct key length
+    cout << "\nINDEX OF COINCIDENCE\n";
+
+    int bestKeyLength = candidates[0];
+
+    double bestDifference = 100.0;
+
+    for (int keyLength : candidates)
+    {
+        vector<string> groups =
+            split_into_groups(ciphertext, keyLength);
+
+        double totalIC = 0.0;
+
+        for (string group : groups)
+        {
+            totalIC += calculate_ic(group);
+        }
+
+        double averageIC =
+            totalIC / groups.size();
+
+        // English IC is approximately 0.066
+        double difference =
+            abs(averageIC - 0.066);
+
+        cout << "Key length "
+             << keyLength
+             << " -> Average IC = "
+             << averageIC
+             << endl;
+
+        if (difference < bestDifference)
+        {
+            bestDifference = difference;
+            bestKeyLength = keyLength;
+        }
+    }
+
+
+    cout << "\nSelected key length using IC: "
+         << bestKeyLength << endl;
+
+
+    // Step 4: Split using selected key length
+    vector<string> groups =
+        split_into_groups(ciphertext, bestKeyLength);
+
+
+    // Step 5: Frequency analysis
+    cout << "\nFREQUENCY ANALYSIS\n";
 
     for (int i = 0; i < (int)groups.size(); i++)
     {
         cout << "\nGroup " << i + 1 << endl;
 
+        cout << "Text: "
+             << groups[i] << endl;
+
+        cout << "Frequency:\n";
+
         frequency_analysis(groups[i]);
 
-        cout << "IC = " << calculate_ic(groups[i]) << endl;
+        cout << "IC = "
+             << calculate_ic(groups[i])
+             << endl;
     }
 
-   
+
+    // Step 6: Find key
     string key = find_key(groups);
 
-    cout << "\nRecovered key: " << key << endl;
+    cout << "\nRECOVERED KEY\n";
+    cout << key << endl;
 
-  
-    string plaintext = vigenere_decrypt(ciphertext, key);
 
-    cout << "\nRecovered plaintext:\n";
+    // Step 7: Decrypt
+    string plaintext =
+        vigenere_decrypt(ciphertext, key);
+
+    cout << "\nRECOVERED PLAINTEXT\n";
     cout << plaintext << endl;
 
-  
-    string encrypted = vigenere_encrypt(plaintext, key);
 
-    cout << "\nVerification: ";
+    // Step 8: Re-encrypt
+    string encrypted =
+        vigenere_encrypt(plaintext, key);
+
+
+    // Step 9: Verify
+    cout << "\nVERIFICATION\n";
 
     if (verify(ciphertext, encrypted))
-        cout << "SUCCESS - Re-encryption matches original ciphertext.\n";
+    {
+        cout << "SUCCESS\n";
+        cout << "Re-encrypted ciphertext matches original ciphertext.\n";
+    }
     else
-        cout << "FAILED - Re-encryption does not match.\n";
+    {
+        cout << "FAILED\n";
+        cout << "Re-encrypted ciphertext does not match original ciphertext.\n";
+    }
+
 
     return 0;
 }

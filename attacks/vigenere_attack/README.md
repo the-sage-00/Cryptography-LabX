@@ -55,3 +55,17 @@ The recovered plaintext is encrypted again using the recovered key. The resultin
 ## Result
 
 The program estimates the Vigenere key length, performs frequency analysis, recovers the probable key, decrypts the ciphertext and verifies the result using re-encryption.
+
+## Cryptanalysis Process
+
+The ciphertext is first cleaned by removing spaces and special characters.
+
+Kasiski Examination is then performed to identify repeated patterns and calculate their distances. Factors of these distances provide candidate key lengths.
+
+Since Kasiski Examination may produce multiple possible key lengths, Index of Coincidence is calculated for each candidate. The candidate whose average IC is closest to the expected English IC is selected as the probable key length.
+
+The ciphertext is divided into groups according to the selected key length. Frequency analysis is then performed on each group. Each group is treated as a Caesar cipher and the probable shift is calculated using English letter frequencies.
+
+The shifts are combined to obtain the probable Vigenere key. The recovered key is used to decrypt the ciphertext.
+
+Finally, the recovered plaintext is encrypted again using the recovered key. The result is compared with the original ciphertext to verify the cryptanalysis.
