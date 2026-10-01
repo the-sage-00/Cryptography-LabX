@@ -18,7 +18,7 @@
 |:---|:---|
 | **Course** | Cryptography Laboratory (22CPP307) |
 | **Department** | Department of Computer Science and Engineering, MNIT Jaipur |
-| **Course Instructor / Professor** | Course Faculty / Lab Incharge |
+| **Course Instructor / Professor** | Dr. Meenakshi Tripathi |
 | **Team Members** | **1. Rishi Saini** (2024UCP1566)<br>**2. Nandini Verma** (2024UCP1667) |
 | **Group Number** | Group 10 (Even Group Number) |
 | **Assigned Application** | IoT Device Management System |
