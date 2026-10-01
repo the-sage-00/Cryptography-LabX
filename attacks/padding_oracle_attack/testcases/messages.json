@@ -1,0 +1,20 @@
+{
+  "messages": [
+    {
+      "label": "Group 10 Assigned Message",
+      "plaintext": "CryptoLabX Group 10 Secret Message for Padding Oracle Lab!"
+    },
+    {
+      "label": "Short Message (Single Block)",
+      "plaintext": "Hello, World!!!"
+    },
+    {
+      "label": "Exactly Two Blocks (32 bytes)",
+      "plaintext": "AES CBC has exactly 32 bytesABC!"
+    },
+    {
+      "label": "Long Multi-Block Message",
+      "plaintext": "The padding oracle attack exploits information leaked when a server decrypts AES-CBC ciphertext and reveals whether the padding is valid."
+    }
+  ]
+}

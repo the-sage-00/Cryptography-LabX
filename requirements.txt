@@ -1,2 +1,3 @@
 # CryptoLabX Dependencies
 # Add project dependencies below as needed-
+pycryptodome>=3.0    # Required for Assignment 7: AES-CBC (Padding Oracle Attack)

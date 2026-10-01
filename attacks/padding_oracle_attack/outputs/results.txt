@@ -1,0 +1,48 @@
+================================================================================
+      PADDING ORACLE ATTACK ON AES-CBC — EXPERIMENTAL RESULTS
+         Course: Cryptography Laboratory (22CPP307) | Group: 10
+================================================================================
+
+Scenario       : Group 10 Assigned Message
+Plaintext      : CryptoLabX Group 10 Secret Message for Padding Oracle Lab!
+IV (hex)       : e40ddbc06dee3d8e33de51f1f22b3f9b
+Ciphertext     : cc54759ec3864e5aad6085f7bf961855f8173b9cd31766e5e3402be8793b52b2fe344ff03b8a23625bfbcee6c19b470f4e8c4202003c80a16d12ec682d2a817c
+CT Length      : 64 bytes (4 blocks)
+Recovered PT   : CryptoLabX Group 10 Secret Message for Padding Oracle Lab!
+Oracle Queries : 8,362
+Exact Match    : YES
+
+--------------------------------------------------------------------------------
+
+Scenario       : Short Message (Single Block)
+Plaintext      : Hello, World!!!
+IV (hex)       : b870bff6d8f228a9338b659915c99b51
+Ciphertext     : e8d051b4c355371cb8fbd9993287cf16
+CT Length      : 16 bytes (1 blocks)
+Recovered PT   : Hello, World!!!
+Oracle Queries : 2,437
+Exact Match    : YES
+
+--------------------------------------------------------------------------------
+
+Scenario       : Exactly Two Blocks (32 bytes)
+Plaintext      : AES CBC has exactly 32 bytesABC!
+IV (hex)       : 7305a6276b881999780699c50ec81282
+Ciphertext     : cf3db6bedd3cfd5a0a3dd98783a5a11985f5947e4dda43d7f619051fbafff3f14a19c68f50205457a0a05933d8e35144
+CT Length      : 48 bytes (3 blocks)
+Recovered PT   : AES CBC has exactly 32 bytesABC!
+Oracle Queries : 6,865
+Exact Match    : YES
+
+--------------------------------------------------------------------------------
+
+Scenario       : Long Multi-Block Message
+Plaintext      : The padding oracle attack exploits information leaked when a server decrypts AES-CBC ciphertext and reveals whether the padding is valid.
+IV (hex)       : b78355b503499614c38f9d7cacf85d91
+Ciphertext     : 0f5e4db4c49a50a93a43153b5ea3e3a4402d8d40ee4261e5da120dc7dcd73f13b5be5ada9a40e373b2258453626e06a17217c8902c5c91687e7422a9e597e22df614c840f2a5cb318b913e80fb23a0b35e450343542b083754008279c5ea6e4576d29f318290822a2676a4cbe6d6b169619e6fc24afebd4aa2c674017cddce5508181187b2d1ff5aad5ef0fb0716e21f
+CT Length      : 144 bytes (9 blocks)
+Recovered PT   : The padding oracle attack exploits information leaked when a server decrypts AES-CBC ciphertext and reveals whether the padding is valid.
+Oracle Queries : 18,963
+Exact Match    : YES
+
+--------------------------------------------------------------------------------
