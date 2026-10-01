@@ -705,7 +705,7 @@ int main() {
         cout << "  Choose option: ";
 
         string choice;
-        getline(cin, choice);
+        if (!getline(cin, choice)) break;
 
         if (choice == "1") {
             frequency_analysis(ciphertext);
