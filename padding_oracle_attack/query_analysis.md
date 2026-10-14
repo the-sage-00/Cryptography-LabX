@@ -32,3 +32,10 @@ The query count does not increase uniformly with plaintext length because the nu
 ## Conclusion
 
 The experiment demonstrates that a Padding Oracle Attack can recover plaintext through repeated oracle queries when the oracle reveals whether the padding is valid. The results illustrate the relationship between ciphertext block count, byte-recovery attempts, and total oracle queries.
+
+
+## Experimental Evidence
+
+The following screenshot shows the output of the query-count experiment for plaintexts of different lengths.
+
+![Padding Oracle query-count experiment](screenshots/query_experiment.jpeg)
