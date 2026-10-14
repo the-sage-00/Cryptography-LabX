@@ -1,4 +1,3 @@
-
 # Padding Oracle Attack: Query Count Analysis
 
 ## Aim
@@ -13,21 +12,23 @@ The existing padding oracle implementation was tested with plaintexts of differe
 
 | Plaintext Length (bytes) | Ciphertext Blocks | Oracle Queries | Verified |
 |---:|---:|---:|:---:|
-| 0 | Fill from output | Fill from output | Fill from output |
-| 2 | Fill from output | Fill from output | Fill from output |
-| 5 | Fill from output | Fill from output | Fill from output |
-| 15 | Fill from output | Fill from output | Fill from output |
-| 16 | Fill from output | Fill from output | Fill from output |
-| 17 | Fill from output | Fill from output | Fill from output |
-| 32 | Fill from output | Fill from output | Fill from output |
-| 38 | Fill from output | Fill from output | Fill from output |
+| 0 | 1 | 1786 | Yes |
+| 2 | 1 | 2106 | Yes |
+| 5 | 1 | 1686 | Yes |
+| 15 | 1 | 2015 | Yes |
+| 16 | 2 | 3993 | Yes |
+| 17 | 2 | 4827 | Yes |
+| 32 | 3 | 5244 | Yes |
+| 37 | 3 | 6984 | Yes |
 
 ## Observations
 
-The number of oracle queries depends on the number of ciphertext blocks and the guesses needed to recover the plaintext bytes. Each byte is recovered by trying possible values and checking the oracle response.
+The experiment successfully recovered all eight plaintexts. The number of oracle queries varied with the plaintext length and the guesses required to recover each byte.
 
-PKCS#7 padding adds a complete block when the plaintext length is an exact multiple of the AES block size. Therefore, the number of ciphertext blocks does not always increase only when the plaintext length exceeds a multiple of 16.
+AES uses a block size of 16 bytes. PKCS#7 padding adds a full block when the plaintext length is an exact multiple of 16 bytes. Therefore, a 16-byte plaintext requires two ciphertext blocks, while a 17-byte plaintext also requires two blocks.
+
+The query count does not increase uniformly with plaintext length because the number of guesses required for each byte varies.
 
 ## Conclusion
 
-The experiment demonstrates that the Padding Oracle Attack can recover plaintext through repeated oracle queries. The query count depends on the plaintext length, block count, and number of guesses required during byte recovery.
+The experiment demonstrates that a Padding Oracle Attack can recover plaintext through repeated oracle queries when the oracle reveals whether the padding is valid. The results illustrate the relationship between ciphertext block count, byte-recovery attempts, and total oracle queries.
