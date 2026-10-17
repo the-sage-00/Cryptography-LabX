@@ -125,7 +125,7 @@ attacks/shift_cipher_attack/
 │   └── test_cases.json           # Predefined test suite
 ├── outputs/
 │   └── results_table.txt         # Generated results table & report
-├── screenshots/                  # Execution screenshots placeholder
+├── screenshots/                  # Terminal execution captures
 ├── reports/
 │   └── Assignment_4_Report.pdf   # Generated PDF Lab Report
 └── README.md                     # Lab notebook & documentation
@@ -142,6 +142,4 @@ python attacks/shift_cipher_attack/src/main.py --auto
 # Interactive CLI menu (custom text testing)
 python attacks/shift_cipher_attack/src/main.py
 
-# Re-generate PDF Report
-python attacks/shift_cipher_attack/reports/generate_pdf.py
 ```

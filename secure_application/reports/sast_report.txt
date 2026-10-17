@@ -1,35 +1,56 @@
                    
                    
 ┌─────────────────┐
-│ 3 Code Findings │
+│ 5 Code Findings │
 └─────────────────┘
-                                                                                                  
-    C:\Users\saini\OneDrive\Desktop\Cryptography-LabX\secure_application\src\iot_device_manager.py
-    ❯❱ python.lang.security.audit.formatted-sql-query.formatted-sql-query
+                             
+    src/iot_device_manager.py
+   ❯❯❱ sast.rules.iot-v1-command-injection-shell-true
           ❰❰ Blocking ❱❱
-          Detected possible formatted SQL query. Use parameterized queries instead.
-          Details: https://sg.run/EkWw                                             
-                                                                                   
-          134┆ cursor.execute(query)
+          V1 Command Injection: subprocess is called with shell=True on a command string that contains user-
+          controlled data. Use an argument list with shell=False and validate input.                        
+                                                                                                            
+           66┆ result = subprocess.run(command, shell=True, capture_output=True, text=True)
    
-   ❯❯❱ python.sqlalchemy.security.sqlalchemy-execute-raw-query.sqlalchemy-execute-raw-query
+   ❯❯❱ sast.rules.iot-v2-path-traversal-open-joined-path
           ❰❰ Blocking ❱❱
-          Avoiding SQL string concatenation: untrusted input concatenated with raw SQL query can result in SQL
-          Injection. In order to execute raw query safely, prepared statement should be used. SQLAlchemy      
-          provides TextualSQL to easily used prepared statement with named parameters. For complex SQL        
-          composition, use SQL Expression Language or Schema Definition Language. In most cases, SQLAlchemy   
-          ORM will be a better option.                                                                        
-          Details: https://sg.run/2b1L                                                                        
-                                                                                                              
-          134┆ cursor.execute(query)
+          V2 Path Traversal: a file is opened from a path built with os.path.join() using an unvalidated
+          filename. Resolve the path and verify it stays inside the base folder.                        
+                                                                                                        
+           73┆ def read_firmware(filename, folder=FIRMWARE_FOLDER):
+           74┆     # VULNERABILITY V2: filename is joined to the folder with no validation, so
+           75┆     # "../internal/device_keys.txt" escapes the firmware directory.
+           76┆     file_path = os.path.join(folder, filename)
+           77┆     with open(file_path, "r") as handle:
+           78┆         return handle.read()
+            ⋮┆----------------------------------------
+           81┆ def upload_firmware(device_id, source_file, new_name, folder=FIRMWARE_FOLDER):
+           82┆     # VULNERABILITY V3: no authentication / authorisation before a privileged action.
+           83┆     destination = os.path.join(folder, new_name)
+           84┆     with open(source_file, "rb") as src:
+           85┆         data = src.read()
+           86┆     with open(destination, "wb") as dst:
+           87┆         dst.write(data)
+           88┆     devices[device_id]["firmware"] = new_name
    
-   ❯❯❱ python.lang.security.audit.subprocess-shell-true.subprocess-shell-true
+    ❯❱ sast.rules.iot-v3-missing-authentication-privileged-function
           ❰❰ Blocking ❱❱
-          Found 'subprocess' function 'run' with 'shell=True'. This is dangerous because this call will spawn
-          the command using a shell process. Doing so propagates current shell settings and variables, which 
-          makes it much easier for a malicious actor to execute commands. Use 'shell=False' instead.         
-          Details: https://sg.run/J92w                                                                       
+          V3 Missing Authentication: privileged function takes no session/credential parameter, so any caller
+          can modify device configuration or firmware.                                                       
                                                                                                              
-           ▶▶┆ Autofix ▶ False
-          178┆ shell=True,
+           81┆ def upload_firmware(device_id, source_file, new_name, folder=FIRMWARE_FOLDER):
+           82┆     # VULNERABILITY V3: no authentication / authorisation before a privileged action.
+           83┆     destination = os.path.join(folder, new_name)
+           84┆     with open(source_file, "rb") as src:
+           85┆         data = src.read()
+           86┆     with open(destination, "wb") as dst:
+           87┆         dst.write(data)
+           88┆     devices[device_id]["firmware"] = new_name
+            ⋮┆----------------------------------------
+           94┆ def update_configuration(device_id, status=None, firmware=None):
+           95┆     # VULNERABILITY V3: anybody who can run the menu may reconfigure any device.
+           96┆     if status:
+           97┆         devices[device_id]["status"] = status
+           98┆     if firmware:
+           99┆         devices[device_id]["firmware"] = firmware
 

@@ -1,0 +1,42 @@
+==============================================================================
+      CryptoLabX -- Miller-Rabin 512-bit Prime Generation Results
+         Course: Cryptography Laboratory (22CPP307) | Group: 10
+==============================================================================
+
++------------------------------------+---------------------------------------+
+| Parameter                          | Value                                 |
++------------------------------------+---------------------------------------+
+| Assigned bit length                | 512                                   |
+| Actual bit length of candidate     | 512                                   |
+| Number of candidates tested        | 220                                   |
+| Number of Miller-Rabin rounds      | 40 rounds (P(err) <= 2^-80)           |
+| Total execution time               | 0.0893 s (89.28 ms)                   |
+| Specified bases passed             | 12/12 bases (primes 2 to 37)          |
+| Independent library verification   | PyCryptodome isPrime: CONFIRMED       |
++------------------------------------+---------------------------------------+
+
+
+FULL GENERATED 512-BIT PRIME CANDIDATE:
+Decimal:
+7299767627410992087616203874684950492669694424549335866219225626580040456892539449711730447628704828090311085732308643492914618426300634566753046656937421
+
+Hexadecimal (128 hex digits):
+0x8b60855a7f27fe805c0a84d826b9f0c47f71c229fcd815b2422605316d1d91080b8004b673e401f58ba176a2dc8e79f5b72c473ccbeb14f5082f42e890836dcd
+
+Decomposition Parameters:
+  s = 2
+  d = 1824941906852748021904050968671237623167423606137333966554806406645010114223134862427932611907176207022577771433077160873228654606575158641688261664234355
+
+Specified Bases Verification:
+  Base 2  : a^(d * 2^1) = -1 (mod n)
+  Base 3  : a^(d * 2^1) = -1 (mod n)
+  Base 5  : a^d = 1 (mod n)
+  Base 7  : a^(d * 2^1) = -1 (mod n)
+  Base 11 : a^(d * 2^1) = -1 (mod n)
+  Base 13 : a^d = 1 (mod n)
+  Base 17 : a^d = 1 (mod n)
+  Base 19 : a^d = -1 (mod n)
+  Base 23 : a^(d * 2^1) = -1 (mod n)
+  Base 29 : a^(d * 2^1) = -1 (mod n)
+  Base 31 : a^d = 1 (mod n)
+  Base 37 : a^(d * 2^1) = -1 (mod n)

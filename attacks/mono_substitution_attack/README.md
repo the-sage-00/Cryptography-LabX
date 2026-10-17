@@ -9,12 +9,17 @@
 ## How to Compile and Run
 
 ```bash
-# Compile
-g++ -o src/mono_cipher.exe src/mono_cipher.cpp -std=c++11
-
-# Run (from mono_substitution_attack folder)
+# Compile (the binary is not committed - it is git-ignored)
 cd attacks/mono_substitution_attack
-src/mono_cipher.exe
+g++ -std=c++11 -O2 -o src/mono_cipher src/mono_cipher.cpp      # Windows: -o src/mono_cipher.exe
+
+# Fully automated demonstration (frequency + word + pattern analysis, iterative recovery,
+# decision table, verification) - reproducible because the key is seeded with 10 (group number)
+./src/mono_cipher --demo
+
+# Interactive menu (manual step-by-step cryptanalysis)
+./src/mono_cipher
+./src/mono_cipher --seed 7      # different key      ./src/mono_cipher --random   # clock-seeded key
 ```
 
 ---
@@ -39,8 +44,9 @@ src/mono_cipher.exe
 | 5 | Remove Substitution | Undo a mapping |
 | 6 | `display_partial_plaintext()` | Show current progress — solved letters and dots for unsolved |
 | 7 | Auto-Solve | Initial guess using frequency matching |
-| 8 | `verify_solution()` | Compare recovered text with original, show accuracy % |
+| 8 | `verify_solution()` | Recover the key, **re-encrypt the recovered plaintext and compare with the ciphertext**, show accuracy % and key agreement |
 | 9 | Reset | Clear all substitutions and start over |
+| 10 | `iterative_recovery()` | Hypothesis testing: propose swaps, keep only those that improve the partial plaintext, print the decision table |
 
 ---
 
@@ -53,7 +59,9 @@ mono_substitution_attack/
 ├── plaintext/
 │   └── source_text.txt          <- Original text from textbook (Page 40)
 ├── outputs/
-│   └── ciphertext.txt           <- Generated encrypted text
+│   ├── ciphertext.txt           <- Generated encrypted text
+│   ├── decision_table.txt       <- Step/Observation/Substitution/Result/Decision table
+│   └── recovered_plaintext.txt  <- Recovered text
 ├── screenshots/                 <- Terminal screenshots
 ├── reports/                     <- Lab report
 └── README.md                    <- This file

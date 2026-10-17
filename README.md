@@ -29,20 +29,19 @@
 
 ## Lab Progress Checklist
 
-- [x] **Lab 1: Project Setup, Repository Structure & Modular CLI**
+- [x] **Lab 1: Project Setup, Repository Structure & Modular CLI** (deliverables: `docs/lab1_foundation/`)
   - Modular directory architecture adhering to course guidelines.
   - Interactive CLI menu with execution logging to `outputs/cryptolabx.log`.
   - Frequency and corpus analysis utilities in `analysis/file_analyzer.py`.
   - Five curated cryptanalysis datasets in `datasets/`.
 
-- [x] **Lab 2: Classical Ciphers Implementation**
-  - Shift Cipher, Caesar Cipher, and polyalphabetic foundation modules.
+- [ ] **Lab 2:** assignment brief not part of this submission (classical ciphers are implemented inside Labs 4, 5 and 6).
 
 - [x] **Lab 3: Secure Application (IoT Device Management) & SAST Analysis**
   - Core IoT device management: device registration, status monitoring, firmware uploads.
-  - Identification and remediation of vulnerabilities: Command Injection, Path Traversal, SQL Injection.
-  - Automated SAST scan automation via Semgrep with structured JSON/text reports in `secure_application/reports/`.
-  - Automated unit test suite with 100% passing rate in `secure_application/testcases/`.
+  - Exactly three intentional vulnerabilities: Command Injection, Path Traversal, Missing Authentication - each with a working exploit.
+  - Hardened version (`iot_device_manager_secure.py`) and Semgrep scan (custom rules) with text/JSON reports in `secure_application/reports/`.
+  - 18 unit tests (functional, exploit proofs, fixes) in `secure_application/testcases/`.
 
 - [x] **Lab 4: Cryptanalysis of Shift Cipher**
   - Key space exploration (26 keys).
@@ -51,7 +50,7 @@
   - Automated evaluation across 5 test cases and comparative summary report.
 
 - [x] **Lab 5: Cryptanalysis of Monoalphabetic Substitution Cipher**
-  - C++ cryptanalytic engine for large key space ($26! \approx 4.03 \times 10^{26}$).
+  - Reproducible (seeded) C++ cryptanalytic engine with iterative hypothesis testing, decision table and re-encryption validation; key space ($26! \approx 4.03 \times 10^{26}$).
   - Six mandatory cryptanalytic functions: `frequency_analysis()`, `word_frequency_analysis()`, `pattern_analysis()`, `apply_substitution()`, `display_partial_plaintext()`, and `verify_solution()`.
   - Pattern signature recognition (e.g., 0.1.2.0 for `THAT`).
   - 100% plaintext recovery benchmarked against ground truth (Katz & Lindell, p. 40).
@@ -71,6 +70,13 @@
   - Analysis of query complexity: theoretical worst-case ($256 \times 16 \times N$) vs. average ($128 \times 16 \times N$) vs. measured queries (~50% efficiency gain).
   - Prevention recommendations: Authenticated Encryption (AES-GCM), Encrypt-then-MAC (HMAC-SHA256), and TLS 1.3 protocol standards.
   - 17 unit tests passing across single-block, multi-block, and edge-case inputs.
+
+- [x] **Lab 8: Cryptographic Prime Generation Using Miller–Rabin (512-bit)**
+  - Exact 512-bit candidate generation with MSB=1 and LSB=1 constraints ($2^{511} \le n < 2^{512}$).
+  - High-throughput small-prime pre-filter eliminating ~85% of composites via trial division.
+  - Multi-base Miller–Rabin primality testing with $k = 40$ independent rounds ($P(\text{error}) \le 2^{-80}$).
+  - Comprehensive verification across 12 deterministic bases ($a \in [2, \dots, 37]$) and cross-validation with PyCryptodome `isPrime()`.
+  - Automated 13-test unit suite covering Carmichael numbers (561, 1105) and exact bit-length guarantees.
 
 ---
 
@@ -97,7 +103,7 @@ CryptoLabX/
 │   ├── mono_substitution_attack/       # Assignment 5: Monoalphabetic Cipher Attack
 │   │   ├── src/                        # C++ source code (mono_cipher.cpp)
 │   │   ├── plaintext/                  # Source text (Katz & Lindell, Page 40)
-│   │   ├── outputs/                    # Generated ciphertext
+│   │   ├── outputs/                    # Ciphertext, decision table, recovered plaintext
 │   │   ├── reports/                    # Assignment 5 PDF Report
 │   │   ├── screenshots/                # Terminal execution captures
 │   │   └── README.md
@@ -115,12 +121,20 @@ CryptoLabX/
 │   │   ├── screenshots/                # Terminal execution captures
 │   │   ├── testcases/                  # Predefined scenarios and test suite (17 tests)
 │   │   └── README.md
+├── math/                               # Mathematical and number-theoretic utilities
+│   ├── prime_generation/               # Assignment 8: 512-bit Miller-Rabin Prime Generator
+│   │   ├── src/                        # Miller-Rabin core, candidate generator, CLI driver
+│   │   ├── outputs/                    # Parameter submission table & 512-bit prime values
+│   │   ├── reports/                    # Assignment 8 PDF Report
+│   │   ├── screenshots/                # Terminal execution captures
+│   │   ├── testcases/                  # Automated unit test suite (13 tests)
+│   │   └── README.md
 │   └── __init__.py
 ├── analysis/                           # Text and corpus analysis tools
 │   ├── file_analyzer.py
 │   └── __init__.py
 ├── secure_application/                 # Assignment 3: Semester Long Project Application
-│   ├── src/                            # IoT Device Management System
+│   ├── src/                            # Vulnerable + hardened IoT Device Management System
 │   ├── sast/                           # Semgrep SAST scan automation scripts
 │   ├── reports/                        # Semgrep scan reports (JSON and TXT)
 │   ├── screenshots/                    # Application and SAST scan screenshots
@@ -130,9 +144,9 @@ CryptoLabX/
 │   ├── testcases/                      # Unit test suite for IoT Manager
 │   └── README.md
 ├── datasets/                           # Curated sample texts for testing and analysis
-├── docs/                               # Lab manuals and theoretical documentation
-│   ├── assignments/                    # Course assignment instruction manuals
-│   └── learning_guide.md
+├── docs/                               # Course documentation
+│   ├── assignments/                    # Assignment manuals + Assignment_Questions.md (all questions)
+│   └── lab1_foundation/                # Assignment 1 deliverables (screenshots, report)
 ├── outputs/                            # Framework logs (cryptolabx.log)
 ├── tests/                              # Global framework unit tests
 ├── utils/                              # CLI menu, logger, and shared helpers
@@ -171,11 +185,14 @@ python main.py
 # Run IoT Device Management Application
 python secure_application/src/iot_device_manager.py
 
+# Run hardened version
+python secure_application/src/iot_device_manager_secure.py
+
 # Run Semgrep SAST Scan
 python secure_application/sast/run_scan.py
 
 # Run Unit Tests
-python secure_application/testcases/test_iot_manager.py
+python secure_application/testcases/test_iot_manager.py -v   # 18 tests
 ```
 
 #### 3. Shift Cipher Cryptanalysis (Lab 4)
@@ -183,17 +200,17 @@ python secure_application/testcases/test_iot_manager.py
 # Automated evaluation across all test cases
 python attacks/shift_cipher_attack/src/main.py
 
-# Run test suite
-python attacks/shift_cipher_attack/testcases/test_cases.json
+# Test cases are defined in attacks/shift_cipher_attack/testcases/test_cases.json (read by main.py)
 ```
 
 #### 4. Monoalphabetic Substitution Cipher (Lab 5)
 ```powershell
-# Compile C++ engine
-g++ -o attacks/mono_substitution_attack/src/mono_cipher.exe attacks/mono_substitution_attack/src/mono_cipher.cpp -std=c++11
-
-# Run interactive cryptanalysis
+# Compile C++ engine (binary is git-ignored)
 cd attacks/mono_substitution_attack
+g++ -std=c++11 -O2 -o src/mono_cipher.exe src/mono_cipher.cpp
+
+# Automated demonstration (decision table + verification) or interactive menu
+.\src\mono_cipher.exe --demo
 .\src\mono_cipher.exe
 ```
 
@@ -218,9 +235,29 @@ python attacks/padding_oracle_attack/src/main.py
 python attacks/padding_oracle_attack/testcases/test_padding_oracle.py
 ```
 
+#### 7. Cryptographic Prime Generation Using Miller–Rabin (Lab 8)
+```powershell
+# Automated execution (512-bit generation, 12 bases test, and results table)
+python math/prime_generation/src/main.py --auto
+
+# Interactive prime generation menu
+python math/prime_generation/src/main.py
+
+# Run full unit test suite (13 tests)
+python math/prime_generation/testcases/test_prime_gen.py
+```
+
+---
+
+## Reports
+
+Every lab has a PDF report in its `reports/` folder: `docs/lab1_foundation/reports/Assignment_1_Report.pdf`, `secure_application/reports/Assignment_3_Report.pdf`, and `Assignment_4` ... `Assignment_8` under `attacks/` and `math/`.
+
 ---
 
 ## Academic Integrity & Version Control
 
 - All implementations in this repository were independently developed by **Group 10** members.
 - Commits are maintained incrementally and descriptively to document the architectural evolution of the toolkit throughout the semester.
+
+> Terminal screenshots in this repository were rendered from real program output in a Windows-PowerShell style. Retake them on your own machine before the viva if you need native captures.

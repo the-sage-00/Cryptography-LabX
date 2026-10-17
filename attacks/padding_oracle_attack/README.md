@@ -88,7 +88,7 @@ For a ciphertext with $N$ blocks:
 |:---:|:---:|:---:|
 | Worst-case  | $256 \times 16 \times N$ | 16,384 queries |
 | Average     | $128 \times 16 \times N$ | 8,192 queries |
-| Actual (measured) | depends on key/data | ~7,000–9,000 queries |
+| Actual (measured) | depends on random key/IV | ~7,000–9,000 queries (see outputs/results.txt) |
 
 ### Why Modifying $C_{i-1}$ Affects $P_i$
 
