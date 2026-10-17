@@ -148,6 +148,16 @@ def analyze_ciphertext(ciphertext_raw: str, label: str = "Target Ciphertext", ma
         group_shifts.append((shift, key_char, chi_score))
         print(f"    Group {i+1:<4} {len(g):<12} {shift:<8} {key_char:<10} {chi_score:.2f}")
 
+    # A-Z frequency table for EVERY group (rows = groups, columns = ciphertext letters)
+    print("\n    A-Z FREQUENCY TABLE FOR EACH GROUP (counts of each ciphertext letter)")
+    print("    " + "-" * 92)
+    print("    Grp  " + " ".join(f"{chr(65 + j):>2}" for j in range(26)) + "   Top")
+    print("    " + "-" * 92)
+    for i, g in enumerate(groups):
+        cnts = frequency_analysis(g)
+        top = max(cnts, key=cnts.get)
+        print(f"    G{i+1:<3} " + " ".join(f"{cnts[chr(65 + j)]:>2}" for j in range(26)) + f"   {top}")
+
     recovered_key = ''.join(recovered_key_chars)
     print(f"\n[>>>] RECOVERED PROBABLE KEY: {recovered_key}")
 
@@ -164,12 +174,10 @@ def analyze_ciphertext(ciphertext_raw: str, label: str = "Target Ciphertext", ma
     print(f"    Ciphertext Recovered   : {'Exact match to original' if is_verified else 'Mismatch'}")
 
     print("\n" + "-" * 78)
-    print("5. RECOVERED PLAINTEXT (Preview)")
+    print("5. RECOVERED PLAINTEXT (complete)")
     print("-" * 78)
-    print("    First 300 characters:")
-    print(f"    {recovered_pt[:300]}")
-    print("\n    Last 200 characters:")
-    print(f"    {recovered_pt[-200:]}")
+    for pos in range(0, len(recovered_pt), 70):
+        print(f"    {recovered_pt[pos:pos + 70]}")
 
     # Build structured return data
     return {

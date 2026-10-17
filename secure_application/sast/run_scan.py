@@ -1,45 +1,50 @@
-# Semgrep SAST scan runner script
+"""
+Semgrep SAST runner for the IoT Device Management application.
+
+Scans src/ with (a) the lab's custom rules in sast/rules/iot_rules.yml and, when the
+machine is online, (b) the public Semgrep registry rule-set (--config auto).
+Reports are written to ../reports/ as text and JSON.
+
+Usage:  python secure_application/sast/run_scan.py            (custom rules only)
+        python secure_application/sast/run_scan.py --registry (custom + registry rules)
+"""
 import os
-import sys
+import shutil
 import subprocess
+import sys
 
-# Ensure UTF-8 output encoding for Windows terminal
-if hasattr(sys.stdout, 'reconfigure'):
-    sys.stdout.reconfigure(encoding='utf-8')
+HERE = os.path.dirname(os.path.abspath(__file__))
+SRC = os.path.join(HERE, "..", "src")
+RULES = os.path.join(HERE, "rules", "iot_rules.yml")
+REPORTS = os.path.join(HERE, "..", "reports")
 
-def run_sast_scan():
-    src_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "src"))
-    report_file = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "reports", "sast_report.txt"))
-    json_report = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "reports", "sast_report.json"))
 
-    print(f"Running Semgrep scan on: {src_dir}\n")
-    cmd = f"semgrep scan --config auto \"{src_dir}\""
-    
-    env = os.environ.copy()
-    env["PATH"] = r"C:\Users\saini\AppData\Roaming\Python\Python313\Scripts;" + env.get("PATH", "")
-    env["PYTHONIOENCODING"] = "utf-8"
+def run(extra_args, output_path):
+    exe = shutil.which("semgrep")
+    if exe is None:
+        sys.exit("semgrep not found. Install it with:  pip install semgrep")
+    cmd = [exe, "scan", "--metrics=off", "--no-git-ignore", "--disable-version-check", *extra_args]
+    env = dict(os.environ, PYTHONIOENCODING="utf-8")
+    result = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, cwd=os.path.join(HERE, ".."))
+    return result.stdout if result.stdout.strip() else result.stderr
 
-    result = subprocess.run(cmd, shell=True, capture_output=True, text=True, encoding="utf-8", errors="ignore", env=env)
-    
-    output_text = result.stdout if result.stdout else result.stderr
-    
-    # Safely print to terminal
-    try:
-        print(output_text)
-    except Exception:
-        print(output_text.encode('ascii', 'ignore').decode('ascii'))
 
-    with open(report_file, "w", encoding="utf-8") as f:
-        f.write(output_text)
-        
-    print(f"\nText report saved to: {report_file}")
+def main():
+    os.makedirs(REPORTS, exist_ok=True)
+    configs = ["--config", RULES]
+    if "--registry" in sys.argv:
+        configs += ["--config", "auto"]
+    target = "src"
+    print(f"Running Semgrep on: {os.path.abspath(SRC)}\n")
+    text = run([*configs, target], None)
+    print(text)
+    with open(os.path.join(REPORTS, "sast_report.txt"), "w", encoding="utf-8") as handle:
+        handle.write(text)
+    js = run([*configs, "--json", target], None)
+    with open(os.path.join(REPORTS, "sast_report.json"), "w", encoding="utf-8") as handle:
+        handle.write(js)
+    print("Reports saved to", os.path.abspath(REPORTS))
 
-    # Generate JSON report as well
-    json_cmd = f"semgrep scan --config auto --json \"{src_dir}\""
-    json_result = subprocess.run(json_cmd, shell=True, capture_output=True, text=True, encoding="utf-8", errors="ignore", env=env)
-    with open(json_report, "w", encoding="utf-8") as f:
-        f.write(json_result.stdout)
-    print(f"JSON report saved to: {json_report}")
 
 if __name__ == "__main__":
-    run_sast_scan()
+    main()
