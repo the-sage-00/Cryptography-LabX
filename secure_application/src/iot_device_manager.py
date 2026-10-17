@@ -1,348 +1,214 @@
 """
-Lab Assignment 3
-IoT Device Management System
+Lab Assignment 3 - IoT Device Management System (INTENTIONALLY VULNERABLE VERSION)
 
-Course  : Cryptography Laboratory (22CPP307)
-Group   : 10
-Language: Python
-SAST    : Semgrep
+Course   : Cryptography Laboratory (22CPP307)
+Group    : 10  (Application 10 = IoT Device Management)
+Language : Python 3        SAST tool: Semgrep
 
-Core Functionalities:
-1. Device Registration
-2. Device Status Monitoring
-3. Firmware Management
-4. Configuration Management
-5. Device Listing
+Core functionalities
+    1. Smart device registration
+    2. Device status monitoring
+    3. Firmware upload / view
+    4. Configuration management
+    5. Device listing
 
-Intentional Vulnerabilities for SAST Detection:
-1. Command Injection (subprocess with shell=True)
-2. SQL Injection (Raw SQL query with string formatting)
-3. Weak Hashing Algorithm (MD5 for password hashing)
-4. Insecure File Handling / Path Traversal
+Intentional vulnerabilities (exactly three, as required by the assignment)
+    V1  Command Injection      -> build_ping_command() / monitor_device()
+    V2  Path Traversal         -> read_firmware()
+    V3  Missing Authentication -> upload_firmware() / update_configuration()
+                                  (privileged actions never check who the caller is)
+
+The hardened counterpart is in iot_device_manager_secure.py.
 """
 
 import os
-import sys
 import subprocess
-import sqlite3
-import hashlib
-
-
-# ============================================================
-#                    APPLICATION DATA & SECRETS
-# ============================================================
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FIRMWARE_FOLDER = os.path.join(BASE_DIR, "firmware_store")
-DB_PATH = os.path.join(BASE_DIR, "iot_devices.db")
-ADMIN_PASSWORD_HASH = hashlib.md5("admin123".encode()).hexdigest()  # VULNERABILITY: Weak Hashing (MD5)
 
 
-devices = {
-    "DEV101": {
-        "name": "Smart Thermostat",
-        "ip": "192.168.1.50",
-        "status": "ONLINE",
-        "firmware": "v1.0"
-    },
-    "DEV102": {
-        "name": "Security Camera",
-        "ip": "192.168.1.51",
-        "status": "ONLINE",
-        "firmware": "v2.0"
-    },
-    "DEV103": {
-        "name": "Smart Door Lock",
-        "ip": "192.168.1.52",
-        "status": "OFFLINE",
-        "firmware": "v1.2"
+def default_devices():
+    return {
+        "DEV101": {"name": "Smart Thermostat", "ip": "192.168.1.50", "status": "ONLINE",  "firmware": "v1.0"},
+        "DEV102": {"name": "Security Camera",  "ip": "192.168.1.51", "status": "ONLINE",  "firmware": "v2.0"},
+        "DEV103": {"name": "Smart Door Lock",  "ip": "192.168.1.52", "status": "OFFLINE", "firmware": "v1.2"},
     }
-}
 
 
-# ============================================================
-#                    SETUP FUNCTION
-# ============================================================
+devices = default_devices()
 
+
+# ----------------------------------------------------------------------------
+# 1. Device registration
+# ----------------------------------------------------------------------------
+def register_device_core(device_id, name, ip):
+    """Register a device. NOTE: ip is stored without any validation."""
+    if not device_id or not name or not ip:
+        raise ValueError("All fields are required")
+    devices[device_id] = {"name": name, "ip": ip, "status": "REGISTERED", "firmware": "v1.0"}
+
+
+# ----------------------------------------------------------------------------
+# 2. Device status monitoring   (V1: COMMAND INJECTION)
+# ----------------------------------------------------------------------------
+def build_ping_command(ip):
+    # VULNERABILITY V1: user-controlled text is concatenated into a shell command line.
+    if os.name == "nt":
+        return "ping -n 1 " + ip
+    return "ping -c 1 " + ip
+
+
+def monitor_device_core(device_id):
+    ip = devices[device_id]["ip"]
+    command = build_ping_command(ip)
+    # VULNERABILITY V1: shell=True lets metacharacters (& ; |) start extra commands.
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+    return command, result.stdout + result.stderr
+
+
+# ----------------------------------------------------------------------------
+# 3. Firmware management        (V2: PATH TRAVERSAL, V3: MISSING AUTHENTICATION)
+# ----------------------------------------------------------------------------
+def read_firmware(filename, folder=FIRMWARE_FOLDER):
+    # VULNERABILITY V2: filename is joined to the folder with no validation, so
+    # "../internal/device_keys.txt" escapes the firmware directory.
+    file_path = os.path.join(folder, filename)
+    with open(file_path, "r") as handle:
+        return handle.read()
+
+
+def upload_firmware(device_id, source_file, new_name, folder=FIRMWARE_FOLDER):
+    # VULNERABILITY V3: no authentication / authorisation before a privileged action.
+    destination = os.path.join(folder, new_name)
+    with open(source_file, "rb") as src:
+        data = src.read()
+    with open(destination, "wb") as dst:
+        dst.write(data)
+    devices[device_id]["firmware"] = new_name
+
+
+# ----------------------------------------------------------------------------
+# 4. Configuration management   (V3: MISSING AUTHENTICATION)
+# ----------------------------------------------------------------------------
+def update_configuration(device_id, status=None, firmware=None):
+    # VULNERABILITY V3: anybody who can run the menu may reconfigure any device.
+    if status:
+        devices[device_id]["status"] = status
+    if firmware:
+        devices[device_id]["firmware"] = firmware
+
+
+# ----------------------------------------------------------------------------
+# Console user interface
+# ----------------------------------------------------------------------------
 def setup_application():
     os.makedirs(FIRMWARE_FOLDER, exist_ok=True)
-    sample_file = os.path.join(FIRMWARE_FOLDER, "sample_firmware.txt")
-    if not os.path.exists(sample_file):
-        with open(sample_file, "w") as file:
-            file.write("Sample IoT Firmware\nVersion: 1.0\nDevice Type: Smart Device\n")
+    sample = os.path.join(FIRMWARE_FOLDER, "sample_firmware.txt")
+    if not os.path.exists(sample):
+        with open(sample, "w") as handle:
+            handle.write("Sample IoT Firmware\nVersion: 1.0\nDevice Type: Smart Device\n")
 
-    # Setup SQLite database for SQL injection demo
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-    cursor.execute("CREATE TABLE IF NOT EXISTS devices (id TEXT, name TEXT, ip TEXT, status TEXT, firmware TEXT)")
-    cursor.execute("DELETE FROM devices")
-    cursor.execute("INSERT INTO devices VALUES ('DEV101', 'Smart Thermostat', '192.168.1.50', 'ONLINE', 'v1.0')")
-    cursor.execute("INSERT INTO devices VALUES ('DEV102', 'Security Camera', '192.168.1.51', 'ONLINE', 'v2.0')")
-    cursor.execute("INSERT INTO devices VALUES ('DEV103', 'Smart Door Lock', '192.168.1.52', 'OFFLINE', 'v1.2')")
-    conn.commit()
-    conn.close()
-
-
-
-# ============================================================
-#                 1. REGISTER DEVICE
-# ============================================================
 
 def register_device():
-    print("\n================================")
-    print("        REGISTER DEVICE")
-    print("================================")
-
+    print("\n================================\n        REGISTER DEVICE\n================================")
     device_id = input("Enter Device ID: ").strip()
     name = input("Enter Device Name: ").strip()
     ip = input("Enter IP Address: ").strip()
-
-    if device_id == "" or name == "" or ip == "":
-        print("\n[!] All fields are required.")
-        return
-
-    devices[device_id] = {
-        "name": name,
-        "ip": ip,
-        "status": "REGISTERED",
-        "firmware": "v1.0"
-    }
-
-    print("\n[+] Device registered successfully!")
+    try:
+        register_device_core(device_id, name, ip)
+        print("\n[+] Device registered successfully!")
+    except ValueError as error:
+        print("\n[!]", error)
 
 
-# ============================================================
-#                 2. VIEW DEVICES (SQL INJECTION DEMO)
-# ============================================================
+def list_devices():
+    print("\n================================\n       REGISTERED DEVICES\n================================")
+    for dev_id, info in devices.items():
+        print(f"{dev_id} | {info['name']:<18} | {info['ip']:<15} | {info['status']:<10} | FW {info['firmware']}")
 
-def view_devices():
-    print("\n================================")
-    print("         REGISTERED DEVICES")
-    print("================================")
-
-    search_id = input("Enter Device ID to search (leave blank for all): ").strip()
-
-    conn = sqlite3.connect(DB_PATH)
-    cursor = conn.cursor()
-
-    if search_id:
-        # --------------------------------------------------------
-        # VULNERABILITY: SQL INJECTION (Raw string formatting in query)
-        # --------------------------------------------------------
-        query = f"SELECT * FROM devices WHERE id = '{search_id}'"
-        try:
-            cursor.execute(query)
-            rows = cursor.fetchall()
-            for r in rows:
-                print(f"\nID: {r[0]} | Name: {r[1]} | IP: {r[2]} | Status: {r[3]} | Firmware: {r[4]}")
-        except Exception as e:
-            print("\n[!] SQL Error:", e)
-    else:
-        cursor.execute("SELECT * FROM devices")
-        rows = cursor.fetchall()
-        for r in rows:
-            print(f"\nID: {r[0]} | Name: {r[1]} | IP: {r[2]} | Status: {r[3]} | Firmware: {r[4]}")
-
-    conn.close()
-
-
-# ============================================================
-#                 3. MONITOR DEVICE (COMMAND INJECTION)
-# ============================================================
 
 def monitor_device():
-    print("\n================================")
-    print("        DEVICE MONITORING")
-    print("================================")
-
+    print("\n================================\n        DEVICE MONITORING\n================================")
     device_id = input("Enter Device ID: ").strip()
-
     if device_id not in devices:
         print("\n[!] Device not found.")
         return
+    command, output = monitor_device_core(device_id)
+    print("\nExecuting:", command)
+    print("\n--- Ping Result ---")
+    print(output[:500])
 
-    ip = devices[device_id]["ip"]
-    print("\nPinging device:", ip)
-
-    # --------------------------------------------------------
-    # VULNERABILITY: COMMAND INJECTION (shell=True with unsanitized string)
-    # --------------------------------------------------------
-    if os.name == "nt":
-        command = "ping -n 1 " + ip
-    else:
-        command = "ping -c 1 " + ip
-
-    try:
-        result = subprocess.run(
-            command,
-            shell=True,
-            capture_output=True,
-            text=True
-        )
-        print("\n--- Ping Result ---")
-        print(result.stdout[:500])
-    except Exception as error:
-        print("\n[!] Error:", error)
-
-
-# ============================================================
-#                 4. FIRMWARE MANAGEMENT (PATH TRAVERSAL)
-# ============================================================
 
 def firmware_management():
     while True:
-        print("\n================================")
-        print("       FIRMWARE MANAGEMENT")
-        print("================================")
-        print("1. View Firmware File")
-        print("2. Upload Firmware")
-        print("3. Back")
-
+        print("\n================================\n       FIRMWARE MANAGEMENT\n================================")
+        print("1. View Firmware File\n2. Upload Firmware\n3. Back")
         choice = input("\nEnter your choice: ").strip()
-
         if choice == "1":
-            view_firmware()
+            filename = input("Enter firmware filename: ").strip()
+            try:
+                print("\n--- File Contents ---")
+                print(read_firmware(filename))
+                print("---------------------")
+            except OSError as error:
+                print("\n[!] Error:", error)
         elif choice == "2":
-            upload_firmware()
+            device_id = input("Enter Device ID: ").strip()
+            if device_id not in devices:
+                print("\n[!] Device not found.")
+                continue
+            source = input("Enter path of firmware file: ").strip()
+            name = input("Enter name for uploaded firmware: ").strip()
+            try:
+                upload_firmware(device_id, source, name)
+                print("\n[+] Firmware uploaded successfully!")
+            except OSError as error:
+                print("\n[!] Error:", error)
         elif choice == "3":
             break
         else:
             print("\n[!] Invalid choice.")
 
 
-def view_firmware():
-    print("\n--------------------------------")
-    print("       VIEW FIRMWARE FILE")
-    print("--------------------------------")
-
-    filename = input("Enter firmware filename: ").strip()
-
-    # --------------------------------------------------------
-    # VULNERABILITY: INSECURE FILE HANDLING / PATH TRAVERSAL
-    # --------------------------------------------------------
-    file_path = os.path.join(FIRMWARE_FOLDER, filename)
-
-    try:
-        with open(file_path, "r") as file:
-            print("\n--- File Contents ---")
-            print(file.read())
-            print("---------------------")
-    except FileNotFoundError:
-        print("\n[!] File not found.")
-    except Exception as error:
-        print("\n[!] Error:", error)
-
-
-def upload_firmware():
-    print("\n--------------------------------")
-    print("        UPLOAD FIRMWARE")
-    print("--------------------------------")
-
+def configuration_management():
+    print("\n================================\n      UPDATE CONFIGURATION\n================================")
     device_id = input("Enter Device ID: ").strip()
     if device_id not in devices:
         print("\n[!] Device not found.")
         return
-
-    source_file = input("Enter path of firmware file: ").strip()
-    filename = input("Enter name for uploaded firmware: ").strip()
-
-    destination = os.path.join(FIRMWARE_FOLDER, filename)
-
-    try:
-        with open(source_file, "rb") as source:
-            data = source.read()
-        with open(destination, "wb") as target:
-            target.write(data)
-        devices[device_id]["firmware"] = filename
-        print("\n[+] Firmware uploaded successfully!")
-    except FileNotFoundError:
-        print("\n[!] Source file not found.")
-    except Exception as error:
-        print("\n[!] Error:", error)
-
-
-# ============================================================
-#                 5. UPDATE CONFIGURATION
-# ============================================================
-
-def update_configuration():
-    print("\n================================")
-    print("      UPDATE CONFIGURATION")
-    print("================================")
-
-    device_id = input("Enter Device ID: ").strip()
-    if device_id not in devices:
-        print("\n[!] Device not found.")
-        return
-
-    print("\nCurrent device information:")
-    print("Name     :", devices[device_id]["name"])
-    print("IP       :", devices[device_id]["ip"])
-    print("Status   :", devices[device_id]["status"])
-    print("Firmware :", devices[device_id]["firmware"])
-
-    print("\nEnter new values.")
-    new_status = input("Status (ONLINE/OFFLINE/MAINTENANCE): ").strip()
-    new_firmware = input("Firmware version: ").strip()
-
-    # --------------------------------------------------------
-    # VULNERABILITY: WEAK AUTHENTICATION / PASSWORD HASH CHECK
-    # --------------------------------------------------------
-    entered_pass = input("Enter admin password to confirm update: ").strip()
-    # Insecure MD5 Hash Comparison
-    if hashlib.md5(entered_pass.encode()).hexdigest() != ADMIN_PASSWORD_HASH:
-        print("\n[!] Admin authentication failed.")
-        return
-
-    if new_status != "":
-        devices[device_id]["status"] = new_status
-    if new_firmware != "":
-        devices[device_id]["firmware"] = new_firmware
-
+    info = devices[device_id]
+    print(f"\nCurrent: name={info['name']}  ip={info['ip']}  status={info['status']}  firmware={info['firmware']}")
+    status = input("New status (ONLINE/OFFLINE/MAINTENANCE): ").strip()
+    firmware = input("New firmware version: ").strip()
+    update_configuration(device_id, status, firmware)      # no authentication (V3)
     print("\n[+] Configuration updated!")
 
 
-# ============================================================
-#                       MAIN MENU
-# ============================================================
-
 def show_menu():
-    print("\n")
-    print("==============================================")
+    print("\n==============================================")
     print("       IoT DEVICE MANAGEMENT SYSTEM")
-    print("                 GROUP 10")
+    print("            GROUP 10  (vulnerable)")
     print("==============================================")
-    print("1. Register Device")
-    print("2. View All Devices")
-    print("3. Monitor Device Status")
-    print("4. Firmware Management")
-    print("5. Update Configuration")
-    print("6. Exit")
+    print("1. Register Device\n2. List Devices\n3. Monitor Device Status\n4. Firmware Management")
+    print("5. Update Configuration\n6. Exit")
     print("==============================================")
 
 
 def main():
     setup_application()
     print("\nIoT Device Management System Started!")
-
+    actions = {"1": register_device, "2": list_devices, "3": monitor_device,
+               "4": firmware_management, "5": configuration_management}
     while True:
         show_menu()
         choice = input("Enter your choice (1-6): ").strip()
-
-        if choice == "1":
-            register_device()
-        elif choice == "2":
-            view_devices()
-        elif choice == "3":
-            monitor_device()
-        elif choice == "4":
-            firmware_management()
-        elif choice == "5":
-            update_configuration()
-        elif choice == "6":
-            print("\nThank you for using the system!")
-            print("Exiting...")
+        if choice == "6":
+            print("\nThank you for using the system!\nExiting...")
             break
+        action = actions.get(choice)
+        if action:
+            action()
         else:
             print("\n[!] Invalid choice.")
 

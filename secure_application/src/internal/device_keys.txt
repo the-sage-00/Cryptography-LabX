@@ -1,0 +1,3 @@
+DEMO ONLY - fake credentials used to demonstrate path traversal
+DEVICE_API_KEY=demo-key-0000-not-real
+ADMIN_NOTE=this file must never be served by the firmware viewer

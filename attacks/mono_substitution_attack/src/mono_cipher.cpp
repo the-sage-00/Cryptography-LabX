@@ -143,12 +143,13 @@ string get_word_pattern(string word) {
 //            ENCRYPTION / DECRYPTION
 // ============================================================
 
-void generate_random_key() {
-    // Create a random permutation of A-Z
+void generate_random_key(unsigned int seed) {
+    // Create a pseudo-random permutation of A-Z (Fisher-Yates shuffle).
+    // A fixed seed makes every run reproducible; --random uses the clock.
     for (int i = 0; i < 26; i++) {
         encryption_key[i] = 'A' + i;
     }
-    srand(time(0));
+    srand(seed);
     for (int i = 25; i > 0; i--) {
         int j = rand() % (i + 1);
         char temp = encryption_key[i];
@@ -440,6 +441,8 @@ void apply_substitution(char cipher_letter, char plain_letter) {
 // ============================================================
 
 void display_partial_plaintext(string ciphertext, bool show_full = false) {
+    for (size_t k = 0; k < ciphertext.length(); k++)
+        if (ciphertext[k] == '\n' || ciphertext[k] == '\r') ciphertext[k] = ' ';
     cout << endl;
     cout << "  ============================================" << endl;
     if (show_full) {
@@ -515,33 +518,28 @@ void verify_solution(string original_plaintext, string ciphertext) {
     cout << "       VERIFICATION" << endl;
     cout << "  ============================================" << endl;
 
-    // Build recovered key from substitution_map (reverse: cipher -> plain)
-    char recovered_key[26];
-    bool key_complete = true;
-    for (int i = 0; i < 26; i++) {
-        char cipher_letter = 'A' + i;
-        bool found = false;
-        for (map<char, char>::iterator it = substitution_map.begin();
-             it != substitution_map.end(); it++) {
-            if (it->second == cipher_letter) {
-                // it->first is the cipher letter that maps to plain letter cipher_letter
-                // Actually we need: for each plain letter, what cipher letter was used
-            }
-        }
+    // Which cipher letters occur in the ciphertext at all?
+    bool present[26] = {false};
+    for (size_t i = 0; i < ciphertext.length(); i++) {
+        char u = to_upper_char(ciphertext[i]);
+        if (u >= 'A' && u <= 'Z') present[u - 'A'] = true;
     }
 
-    // Build forward key: plain letter -> cipher letter
-    // substitution_map stores cipher->plain, so reverse it
-    cout << "  Recovered Decryption Key:" << endl;
+    // Recovered DECRYPTION key (cipher -> plain) and ENCRYPTION key (plain -> cipher)
+    cout << "  Recovered Decryption Key (cipher -> plain):" << endl;
     cout << "  Cipher: ";
     for (char c = 'A'; c <= 'Z'; c++) cout << c << " ";
     cout << endl << "  Plain : ";
+    bool key_complete = true;
+    char recovered_enc[26];
+    for (int i = 0; i < 26; i++) recovered_enc[i] = '?';
     for (char c = 'A'; c <= 'Z'; c++) {
-        if (substitution_map.find(c) != substitution_map.end())
+        if (substitution_map.find(c) != substitution_map.end()) {
             cout << substitution_map[c] << " ";
-        else {
+            recovered_enc[substitution_map[c] - 'A'] = c;
+        } else {
             cout << "? ";
-            key_complete = false;
+            if (present[c - 'A']) key_complete = false;
         }
     }
     cout << endl;
@@ -551,60 +549,74 @@ void verify_solution(string original_plaintext, string ciphertext) {
         return;
     }
 
-    // Decrypt ciphertext using recovered map
+    // Decrypt the ciphertext with the recovered mapping
     string recovered_text = "";
-    for (int i = 0; i < ciphertext.length(); i++) {
+    for (size_t i = 0; i < ciphertext.length(); i++) {
         char c = ciphertext[i];
         char upper = to_upper_char(c);
         if (upper >= 'A' && upper <= 'Z') {
             char plain = substitution_map[upper];
-            if (c >= 'a' && c <= 'z')
-                recovered_text += (char)(plain - 'A' + 'a');
-            else
-                recovered_text += plain;
+            if (c >= 'a' && c <= 'z') recovered_text += (char)(plain - 'A' + 'a');
+            else                      recovered_text += plain;
         } else {
             recovered_text += c;
         }
     }
 
-    // Compare with original
+    // Accuracy against the original plaintext
     string orig_upper = to_upper(original_plaintext);
     string recv_upper = to_upper(recovered_text);
-
     int match = 0, total = 0;
-    for (int i = 0; i < min(orig_upper.length(), recv_upper.length()); i++) {
+    for (size_t i = 0; i < orig_upper.length() && i < recv_upper.length(); i++) {
         if (is_alpha(orig_upper[i])) {
             total++;
             if (orig_upper[i] == recv_upper[i]) match++;
         }
     }
-
     double accuracy = (total > 0) ? (match * 100.0 / total) : 0;
-    cout << endl;
-    cout << "  Accuracy: " << match << "/" << total << " letters correct ("
-         << fixed << setprecision(1) << accuracy << "%)" << endl;
+    cout << endl << "  Plaintext accuracy : " << match << "/" << total
+         << " letters correct (" << fixed << setprecision(1) << accuracy << "%)" << endl;
 
-    if (accuracy > 99.0) {
-        cout << "  [+] SUCCESS! Plaintext fully recovered!" << endl;
+    // KEY VALIDATION BY RE-ENCRYPTION: encrypt recovered plaintext with the recovered key
+    // and require that it reproduces the original ciphertext exactly.
+    string re_encrypted = "";
+    for (size_t i = 0; i < recovered_text.length(); i++) {
+        char c = recovered_text[i];
+        if (c >= 'A' && c <= 'Z')      re_encrypted += recovered_enc[c - 'A'];
+        else if (c >= 'a' && c <= 'z') re_encrypted += (char)(recovered_enc[c - 'a'] - 'A' + 'a');
+        else                           re_encrypted += c;
+    }
+    bool reenc_ok = (re_encrypted == ciphertext);
+    cout << "  Re-encryption check: encrypt(recovered plaintext, recovered key) == ciphertext ? "
+         << (reenc_ok ? "YES [EXACT MATCH]" : "NO [MISMATCH]") << endl;
+
+    // Compare recovered key with the key actually used
+    int key_match = 0, key_total = 0;
+    for (int i = 0; i < 26; i++) {
+        if (present[encryption_key[i] - 'A']) {
+            key_total++;
+            if (recovered_enc[i] == encryption_key[i]) key_match++;
+        }
+    }
+    cout << "  Key agreement      : " << key_match << "/" << key_total
+         << " key letters identical to the real key" << endl;
+
+    if (accuracy > 99.9 && reenc_ok) {
+        cout << "  [+] SUCCESS! Plaintext and key fully recovered and validated." << endl;
     } else if (accuracy > 80.0) {
         cout << "  [~] Almost there! A few substitutions may be wrong." << endl;
     } else {
         cout << "  [!] Many letters incorrect. Continue refining substitutions." << endl;
     }
 
-    // Show actual encryption key vs recovered
-    cout << endl << "  Actual Encryption Key Used:" << endl;
+    cout << endl << "  Actual Encryption Key Used (plain -> cipher):" << endl;
     cout << "  Plain : ";
     for (char c = 'A'; c <= 'Z'; c++) cout << c << " ";
     cout << endl << "  Cipher: ";
     for (int i = 0; i < 26; i++) cout << encryption_key[i] << " ";
+    cout << endl << "  Recov.: ";
+    for (int i = 0; i < 26; i++) cout << recovered_enc[i] << " ";
     cout << endl;
-
-    // Re-encrypt with recovered key to validate
-    cout << endl << "  First 100 chars of recovered plaintext:" << endl;
-    cout << "  " << recovered_text.substr(0, 100) << endl;
-    cout << endl << "  First 100 chars of original plaintext:" << endl;
-    cout << "  " << original_plaintext.substr(0, 100) << endl;
 }
 
 
@@ -643,11 +655,162 @@ void auto_frequency_solve(string ciphertext) {
 }
 
 
+
+// ============================================================
+//   ITERATIVE HYPOTHESIS-TESTING RECOVERY (decision table)
+// ============================================================
+// A small list of very common English words used ONLY to score a hypothesis:
+// score = total letters in ciphertext words that decode to a listed word.
+static const char* COMMON_WORDS[] = { "A","ABOUT","ABOVE","ADVERSARY","AFTER","AGAINST","ALGORITHM","ALGORITHMS","ALL","ALSO","ALTHOUGH","AMONG","AN","AND","ANOTHER","ANY","APPROACH","ARE","AS","ASPECTS","ASSUME","ASSUMED","ASSUMPTIONS","AT","ATTACK","ATTACKING","ATTACKS","BACK","BASED","BASIC","BE","BECAUSE","BEEN","BEFORE","BEGIN","BEHAVE","BEHIND","BEING","BELOW","BETWEEN","BOTH","BUT","BY","CALLED","CAME","CAN","CASE","CASES","CENTRAL","CHAPTER","CHARACTERIZES","CIPHER","CIPHERTEXT","CLASSICAL","COME","COMMUNICATING","COMPUTATIONAL","CONSTRUCTIONS","CONTRAST","COULD","CRYPTOGRAPHIC","CRYPTOGRAPHY","DAY","DEFINITION","DEFINITIONS","DESCRIBED","DEVELOP","DEVELOPMENT","DID","DIFFERENT","DISCUSS","DISCUSSING","DO","DOWN","EACH","ENCRYPTION","ENOUGH","ESPECIALLY","EVEN","EXAMPLE","EXIST","EXISTING","EXISTS","FACT","FEW","FIRST","FOLLOWING","FOLLOWS","FOR","FORM","FORMAL","FORMALLY","FROM","FUNCTIONALITY","FUNDAMENTAL","GENERATED","GET","GIVE","GIVEN","GIVES","GO","GOAL","GOOD","GREAT","HAD","HAS","HAVE","HAVING","HE","HER","HERE","HIS","HOW","HOWEVER","I","IDEA","IDEAS","IF","IMPORTANT","IN","INFORMATION","INTO","IS","IT","JUST","KEY","KEYS","KNOW","KNOWN","LAST","LEARN","LIFE","LIKE","LITTLE","LONG","MADE","MAKE","MAN","MANY","MATHEMATICAL","MAY","ME","MEAN","MEANS","MEANT","MEN","MESSAGE","MIGHT","MODEL","MODELS","MODERN","MORE","MOST","MUCH","MUST","MY","NAME","NAMED","NATURE","NECESSARY","NEVER","NEW","NO","NOT","NOW","OF","OFF","OLD","ON","ONE","ONLY","OR","OTHER","OUR","OUT","OVER","OWN","PARTICULAR","PARTIES","PEOPLE","PERFECT","PLAINTEXT","POINT","POINTS","POSSIBLE","POWER","PRECISE","PRINCIPLE","PRINCIPLES","PRIVATE","PROOF","PROPERTIES","PROVABLY","PROVE","PUBLIC","RANDOM","REQUIRE","REQUIRED","REQUIRES","RIGHT","RIGOROUS","SAME","SCHEME","SCHEMES","SECRECY","SECTION","SECURE","SECURITY","SEE","SEVERAL","SHARED","SHOULD","SIMPLE","SINCE","SO","SOME","SPACE","SPECIFIES","STATE","STATES","STILL","SUCH","SYNTAX","TAKE","TERM","TERMS","THAN","THAT","THE","THEM","THEN","THEORETIC","THERE","THEREFORE","THESE","THEY","THING","THINGS","THIS","THOSE","THOUGH","THREAT","THREE","THROUGH","TIME","TO","TOO","TWO","UNDER","UNDERLIE","UP","US","USE","USED","USEFUL","USES","USING","VERY","WAS","WAY","WAYS","WE","WELL","WERE","WHAT","WHEN","WHERE","WHETHER","WHICH","WHILE","WHO","WILL","WITH","WITHIN","WITHOUT","WORK","WORLD","WOULD","WRITE","WRITTEN","WROTE","YEAR","YEARS","YOU","YOUR" };
+static const int N_COMMON = sizeof(COMMON_WORDS) / sizeof(COMMON_WORDS[0]);
+
+struct DecisionRow { int step; string observation; string hypothesis; string tested; string decision; };
+vector<DecisionRow> decision_table;
+
+int score_mapping(const map<string,int>& uniq, const char m[26], const set<string>& dict) {
+    int score = 0;
+    for (map<string,int>::const_iterator it = uniq.begin(); it != uniq.end(); it++) {
+        string d = it->first;
+        for (size_t i = 0; i < d.length(); i++) d[i] = m[d[i] - 'A'];
+        if (dict.find(d) != dict.end()) score += (int)d.length() * it->second;
+    }
+    return score;
+}
+
+// Swap the plaintext letters assigned to two cipher letters if (and only if) the
+// word-score improves -> otherwise the hypothesis is rejected and undone.
+bool try_swap(char a, char b, const map<string,int>& uniq, char m[26], const set<string>& dict,
+              int& cur, int& step, const string& observation, bool log_rejected) {
+    char t = m[a - 'A']; m[a - 'A'] = m[b - 'A']; m[b - 'A'] = t;
+    int s = score_mapping(uniq, m, dict);
+    ostringstream hyp, res;
+    hyp << a << "->" << m[a - 'A'] << ", " << b << "->" << m[b - 'A'];
+    res << "score " << cur << " -> " << s;
+    if (s > cur) {
+        decision_table.push_back({++step, observation, hyp.str(), res.str(), "Accepted (improved)"});
+        cur = s;
+        return true;
+    }
+    // reject: undo the swap
+    t = m[a - 'A']; m[a - 'A'] = m[b - 'A']; m[b - 'A'] = t;
+    if (log_rejected)
+        decision_table.push_back({++step, observation, hyp.str(), res.str(), "Rejected (no gain)"});
+    return false;
+}
+
+void iterative_recovery(string ciphertext) {
+    cout << endl << "  ============================================" << endl;
+    cout << "       ITERATIVE HYPOTHESIS-TESTING RECOVERY" << endl;
+    cout << "  ============================================" << endl;
+
+    set<string> dict;
+    for (int i = 0; i < N_COMMON; i++) dict.insert(COMMON_WORDS[i]);
+    vector<string> words = get_words(ciphertext);
+    map<string,int> uniq;
+    for (size_t i = 0; i < words.size(); i++) uniq[words[i]]++;
+
+    // --- Observation 1: frequency ranking gives the initial hypothesis ---
+    int freq[26] = {0};
+    for (size_t i = 0; i < ciphertext.length(); i++) {
+        char c = to_upper_char(ciphertext[i]);
+        if (c >= 'A' && c <= 'Z') freq[c - 'A']++;
+    }
+    vector<pair<int,char> > sf;
+    for (int i = 0; i < 26; i++) sf.push_back(make_pair(freq[i], (char)('A' + i)));
+    sort(sf.begin(), sf.end());
+    reverse(sf.begin(), sf.end());
+
+    char m[26];     // m[cipher] = plain
+    for (int i = 0; i < 26; i++) m[sf[i].second - 'A'] = ENGLISH_ORDER[i];
+    int cur = score_mapping(uniq, m, dict);
+    int step = 0;
+    {
+        ostringstream o, h;
+        o << sf[0].second << " occurs most often (" << freq[sf[0].second - 'A'] << " times)";
+        h << "rank map to ETAOIN..";
+        ostringstream r; r << "score = " << cur;
+        decision_table.push_back({++step, o.str(), h.str(), r.str(), "Accepted (starting point)"});
+    }
+    cout << "  Initial frequency-rank hypothesis scored " << cur << " matched word-letters." << endl;
+
+    // --- Observation 2: one-letter words must be A or I ---
+    map<string,int> one;
+    for (map<string,int>::iterator it = uniq.begin(); it != uniq.end(); it++)
+        if (it->first.length() == 1) one[it->first] = it->second;
+    for (map<string,int>::iterator it = one.begin(); it != one.end(); it++) {
+        char c = it->first[0];
+        for (int k = 0; k < 2; k++) {
+            char want = (k == 0) ? 'A' : 'I';
+            if (m[c - 'A'] == want) break;
+            // find cipher letter currently decoding to 'want' and swap
+            for (char o = 'A'; o <= 'Z'; o++) if (m[o - 'A'] == want && o != c) {
+                ostringstream obs; obs << "one-letter word '" << c << "' appears " << it->second << "x";
+                if (try_swap(c, o, uniq, m, dict, cur, step, obs.str(), true)) k = 2;
+                break;
+            }
+        }
+    }
+
+    // --- Observation 3: the most frequent 3-letter word is almost always THE ---
+    string best3 = ""; int best3c = 0;
+    for (map<string,int>::iterator it = uniq.begin(); it != uniq.end(); it++)
+        if (it->first.length() == 3 && it->second > best3c) { best3 = it->first; best3c = it->second; }
+    if (best3.length() == 3) {
+        const char* the = "THE";
+        for (int k = 0; k < 3; k++) {
+            char c = best3[k];
+            for (char o = 'A'; o <= 'Z'; o++) if (m[o - 'A'] == the[k] && o != c) {
+                ostringstream obs; obs << "most frequent 3-letter word " << best3 << " (" << best3c << "x) -> THE";
+                try_swap(c, o, uniq, m, dict, cur, step, obs.str(), true);
+                break;
+            }
+        }
+    }
+
+    // --- Observation 4: hill-climb over remaining swaps until no hypothesis helps ---
+    int rejected = 0;
+    for (int pass = 1; pass <= 12; pass++) {
+        bool improved = false;
+        for (char a = 'A'; a <= 'Z'; a++) {
+            for (char b = a + 1; b <= 'Z'; b++) {
+                ostringstream obs; obs << "pass " << pass << ": partial words not yet in dictionary";
+                if (try_swap(a, b, uniq, m, dict, cur, step, obs.str(), false)) improved = true;
+                else rejected++;
+            }
+        }
+        if (!improved) break;
+    }
+    ostringstream summ; summ << rejected << " further swap hypotheses tested";
+    decision_table.push_back({++step, "hill-climb converged", summ.str(), "no swap improves score", "Rejected (all)"});
+
+    substitution_map.clear();
+    for (int i = 0; i < 26; i++) substitution_map[(char)('A' + i)] = m[i];
+
+    cout << "  Final word-score: " << cur << "  (" << step << " logged steps, "
+         << rejected << " swaps rejected during hill-climb)" << endl;
+}
+
+void print_decision_table(const string& save_path) {
+    ostringstream out;
+    out << "  +------+----------------------------------------------+-----------------------+--------------------+----------------------------+" << endl;
+    out << "  | Step | Observation                                  | Possible Subst.       | Tested Result      | Decision                   |" << endl;
+    out << "  +------+----------------------------------------------+-----------------------+--------------------+----------------------------+" << endl;
+    for (size_t i = 0; i < decision_table.size(); i++) {
+        const DecisionRow& r = decision_table[i];
+        out << "  | " << left << setw(4) << r.step << " | " << setw(44) << r.observation.substr(0, 44)
+            << " | " << setw(21) << r.hypothesis.substr(0, 21) << " | " << setw(18) << r.tested.substr(0, 18)
+            << " | " << setw(26) << r.decision.substr(0, 26) << " |" << endl;
+    }
+    out << "  +------+----------------------------------------------+-----------------------+--------------------+----------------------------+" << endl;
+    cout << endl << "  DECISION TABLE (notebook format)" << endl << out.str();
+    if (!save_path.empty()) write_file(save_path, out.str());
+}
+
 // ============================================================
 //                     MAIN MENU
 // ============================================================
 
-int main() {
+int main(int argc, char* argv[]) {
     string plaintext_path = "plaintext/source_text.txt";
     string ciphertext_path = "outputs/ciphertext.txt";
 
@@ -670,7 +833,15 @@ int main() {
     cout << "  [+] Loaded plaintext (" << plaintext.length() << " characters)" << endl;
 
     // Generate random key and encrypt
-    generate_random_key();
+    unsigned int seed = 10;          // default seed = group number -> reproducible ciphertext
+    bool demo = false;
+    for (int a = 1; a < argc; a++) {
+        string arg = argv[a];
+        if (arg == "--random") seed = (unsigned int)time(0);
+        else if (arg == "--seed" && a + 1 < argc) seed = (unsigned int)atoi(argv[++a]);
+        else if (arg == "--demo") demo = true;
+    }
+    generate_random_key(seed);
     ciphertext = encrypt_text(plaintext);
 
     // Save ciphertext
@@ -684,6 +855,28 @@ int main() {
     cout << endl << "  Cipher: ";
     for (int i = 0; i < 26; i++) cout << encryption_key[i] << " ";
     cout << endl;
+
+    // Non-interactive full demonstration (used for screenshots / report)
+    if (demo) {
+        frequency_analysis(ciphertext);
+        word_frequency_analysis(ciphertext);
+        pattern_analysis(ciphertext);
+        iterative_recovery(ciphertext);
+        print_decision_table("outputs/decision_table.txt");
+        display_partial_plaintext(ciphertext, false);
+        verify_solution(plaintext, ciphertext);
+        // save the recovered plaintext for the report
+        string rec = "";
+        for (size_t i = 0; i < ciphertext.length(); i++) {
+            char c = ciphertext[i]; char u = to_upper_char(c);
+            if (u >= 'A' && u <= 'Z') { char p = substitution_map[u]; rec += (c >= 'a') ? (char)(p - 'A' + 'a') : p; }
+            else rec += c;
+        }
+        write_file("outputs/recovered_plaintext.txt", rec);
+        cout << endl << "  [+] Decision table  -> outputs/decision_table.txt" << endl;
+        cout << "  [+] Recovered text  -> outputs/recovered_plaintext.txt" << endl;
+        return 0;
+    }
 
     // Interactive menu
     while (true) {
@@ -700,6 +893,7 @@ int main() {
         cout << "  [7] Auto-Solve (Frequency Guess)" << endl;
         cout << "  [8] Verify Solution" << endl;
         cout << "  [9] Reset All Substitutions" << endl;
+        cout << "  [10] Iterative Recovery (hypothesis testing + decision table)" << endl;
         cout << "  [0] Exit" << endl;
         cout << "  ======================================================" << endl;
         cout << "  Choose option: ";
@@ -753,12 +947,17 @@ int main() {
             substitution_map.clear();
             cout << "  [+] All substitutions cleared." << endl;
 
+        } else if (choice == "10") {
+            iterative_recovery(ciphertext);
+            print_decision_table("outputs/decision_table.txt");
+            display_partial_plaintext(ciphertext);
+
         } else if (choice == "0") {
             cout << "  Goodbye!" << endl;
             break;
 
         } else {
-            cout << "  [!] Invalid option. Enter 0-9." << endl;
+            cout << "  [!] Invalid option. Enter 0-10." << endl;
         }
     }
 
