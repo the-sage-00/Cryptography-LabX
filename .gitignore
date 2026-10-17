@@ -1,36 +1,28 @@
-# Byte-compiled / optimized / DLL / Executable files
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.exe
-*.db
-
-
-# Virtual environments
 venv/
 env/
 .env/
 
-# IDE files
+# Compiled binaries / local databases
+*.exe
+*.out
+*.db
+
+# IDE / OS
 .vscode/
 .idea/
 *.swp
-*.swo
-
-# OS generated files
 .DS_Store
 Thumbs.db
 
-# Log files
-*.log
-
-# Output files
+# Runtime outputs of the root CLI (the sample log is kept as a Lab 1 deliverable)
 outputs/*.txt
 outputs/*.csv
 !outputs/.gitkeep
-!attacks/mono_substitution_attack/outputs/ciphertext.txt
-!attacks/**/.gitkeep
+!outputs/cryptolabx.log
 
-# Local study / guide notes
-*Guide.md
-*guide.md
+# Local study notes (not part of the submission)
+docs/study_guides/
